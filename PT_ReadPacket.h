@@ -415,6 +415,7 @@ inline VOID READ_PT_FREQUENCY_MOVE_CS(BYTE *buffer, S_PT_FREQUENCY_MOVE_CS &para
 	Stream->ReadFloat(&parameter.ANGLEY);
 	Stream->ReadDWORD(&parameter.DIRECTION);
 	Stream->ReadBOOL(&parameter.JUMP);
+
 }
 inline VOID READ_PT_FREQUENCY_MOVE_SC(BYTE *buffer, S_PT_FREQUENCY_MOVE_SC &parameter)
 {
@@ -428,4 +429,5 @@ inline VOID READ_PT_FREQUENCY_MOVE_SC(BYTE *buffer, S_PT_FREQUENCY_MOVE_SC &para
 	Stream->ReadFloat(&parameter.ANGLEY);
 	Stream->ReadDWORD(&parameter.DIRECTION);
 	Stream->ReadBOOL(&parameter.JUMP);
+
 }

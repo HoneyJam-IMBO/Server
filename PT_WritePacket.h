@@ -842,6 +842,7 @@ inline DWORD WRITE_PT_FREQUENCY_MOVE_CS(BYTE *buffer, float POSX, float POSY, fl
 	Stream->WriteFloat(ANGLEY);
 	Stream->WriteDWORD(DIRECTION);
 	Stream->WriteBOOL(JUMP);
+	
 	return Stream->GetLength();
 }
 inline DWORD WRITE_PT_FREQUENCY_MOVE_SC(BYTE *buffer,INT SLOT_ID, float POSX, float POSY, float POSZ, float ANGLEY, DWORD DIRECTION, bool JUMP)

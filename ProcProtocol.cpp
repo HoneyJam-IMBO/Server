@@ -91,7 +91,7 @@ VOID CServerIocp::PROC_PT_FREQUENCY_MOVE_CS(CConnectedSession *pConnectedSession
 	m_pRoom->WriteAllExceptMe(SLOT_ID, PT_FREQUENCY_MOVE_SC, Packet, WRITE_PT_FREQUENCY_MOVE_SC(Packet,
 		SLOT_ID, fPosX, fPosY, fPosZ, fAngleY, dwDirection, bJump));
 		
-	//std::cout << SLOT_ID << " " << fPosX <<" " << fPosY << " " << fPosZ << " A "<< fAngleY <<std::endl;
+	std::cout << SLOT_ID << ", " << fPosX <<", " << fPosY << ", " << fPosZ << " Angle : "<< fAngleY << std::endl;
 	//위치 동기화
 	//pPlayer->SetPlayerPosition(XMLoadFloat3(&xmfPos));
 
