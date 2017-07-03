@@ -381,6 +381,12 @@ typedef enum _PROTOCOL
 		PT_FTOWN_READY_SC,
 		/*
 		*/
+		PT_MOUSE_LEFT_ATTACK_SC,
+		/*
+		*/
+		PT_MOUSE_LEFT_ATTACK_CS,
+		/*
+		*/
 	// 프로토콜 끝
 	PT_END
 };

@@ -431,3 +431,19 @@ inline VOID READ_PT_FREQUENCY_MOVE_SC(BYTE *buffer, S_PT_FREQUENCY_MOVE_SC &para
 	Stream->ReadBOOL(&parameter.JUMP);
 
 }
+inline VOID READ_PT_MOUSE_LEFT_ATTACK_CS(BYTE *buffer, _S_PT_MOUSE_LEFT_ATTACK_CS &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->ReadBOOL(&parameter.ATTACK);
+}
+inline VOID READ_PT_MOUSE_LEFT_ATTACK_SC(BYTE *buffer, _S_PT_MOUSE_LEFT_ATTACK_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->ReadInt32(&parameter.SLOT_ID);
+	Stream->ReadBOOL(&parameter.ATTACK);
+
+}

@@ -859,3 +859,21 @@ inline DWORD WRITE_PT_FREQUENCY_MOVE_SC(BYTE *buffer,INT SLOT_ID, float POSX, fl
 	Stream->WriteBOOL(JUMP);
 	return Stream->GetLength();
 }
+inline DWORD WRITE_PT_MOUSE_LEFT_ATTACK_CS(BYTE *buffer, bool ATTACK)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteBOOL(ATTACK);
+
+	return Stream->GetLength();
+}
+inline DWORD WRITE_PT_MOUSE_LEFT_ATTACK_SC(BYTE *buffer, INT SLOT_ID, bool ATTACK)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(SLOT_ID);
+	Stream->WriteBOOL(ATTACK);
+	return Stream->GetLength();
+}

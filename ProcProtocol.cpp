@@ -81,6 +81,7 @@ VOID CServerIocp::PROC_PT_FREQUENCY_MOVE_CS(CConnectedSession *pConnectedSession
 	float fAngleY = Data.ANGLEY;
 	DWORD dwDirection = Data.DIRECTION;
 	bool bJump = Data.JUMP;
+	
 	//std::cout << dwDirection << ' '<<"ANGLEY -" << fAngleY << std::endl;
 	
 	pConnectedSession->GetPlayer()->GetROOM_ID();
@@ -91,7 +92,7 @@ VOID CServerIocp::PROC_PT_FREQUENCY_MOVE_CS(CConnectedSession *pConnectedSession
 	m_pRoom->WriteAllExceptMe(SLOT_ID, PT_FREQUENCY_MOVE_SC, Packet, WRITE_PT_FREQUENCY_MOVE_SC(Packet,
 		SLOT_ID, fPosX, fPosY, fPosZ, fAngleY, dwDirection, bJump));
 		
-	std::cout << SLOT_ID << ", " << fPosX <<", " << fPosY << ", " << fPosZ << " Angle : "<< fAngleY << std::endl;
+	//std::cout << SLOT_ID << ", " << fPosX <<", " << fPosY << ", " << fPosZ << " Angle : "<< fAngleY << std::endl;
 	//위치 동기화
 	//pPlayer->SetPlayerPosition(XMLoadFloat3(&xmfPos));
 
@@ -103,6 +104,44 @@ VOID CServerIocp::PROC_PT_FREQUENCY_MOVE_CS(CConnectedSession *pConnectedSession
 	//		pPlayer->GetID(), xmfPos.x, xmfPos.y, xmfPos.z));
 
 }
+
+VOID CServerIocp::PROC_PT_MOUSE_LEFT_ATTACK_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength)
+{
+	//플레이어의 지역이 아직 설정 안되있으면 return;
+	//if (nullptr == pConnectedSession->GetPlayer()->GetRegion()) return;
+
+
+	// 전처리 함수로 간략화
+	READ_PACKET(PT_MOUSE_LEFT_ATTACK_CS);
+	// 실제 코드
+
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+
+	INT SLOT_ID = pConnectedSession->GetPlayer()->GetSLOT_ID();
+	bool bAttack = Data.ATTACK;
+	//std::cout << dwDirection << ' '<<"ANGLEY -" << fAngleY << std::endl;
+
+	pConnectedSession->GetPlayer()->GetROOM_ID();
+
+	//m_pRoom->WriteAll(PT_FREQUENCY_MOVE_SC, Packet, WRITE_PT_FREQUENCY_MOVE_SC(Packet,
+	//	SLOT_ID, dwDirection, fAngleY));
+
+	m_pRoom->WriteAllExceptMe(SLOT_ID, PT_MOUSE_LEFT_ATTACK_SC, Packet, WRITE_PT_MOUSE_LEFT_ATTACK_SC(Packet,
+		SLOT_ID, bAttack));
+
+	std::cout << SLOT_ID << ", " << bAttack << std::endl;
+	//위치 동기화
+	//pPlayer->SetPlayerPosition(XMLoadFloat3(&xmfPos));
+
+	////충돌체크
+
+	////브로드 캐스트
+	//pPlayer->GetRegion()->WriteAll(PT_FREQUENCY_MOVE_SC, Packet,
+	//	WRITE_PT_FREQUENCY_MOVE_SC(Packet, PLAYER, 
+	//		pPlayer->GetID(), xmfPos.x, xmfPos.y, xmfPos.z));
+
+}
+
 
 VOID CServerIocp::PROC_PT_KEY_INPUT_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength)
 {

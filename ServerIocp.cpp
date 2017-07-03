@@ -315,6 +315,9 @@ VOID CServerIocp::OnIoRead(VOID *pObject, DWORD dwDataLength)
 			case PT_FREQUENCY_MOVE_CS:
 				PROC_PT_FREQUENCY_MOVE_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
 				break;
+			case PT_MOUSE_LEFT_ATTACK_CS:
+				PROC_PT_MOUSE_LEFT_ATTACK_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
+				break;
 			}
 		}
 	}
