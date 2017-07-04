@@ -3,6 +3,7 @@
 
 void CRoom::AddPlayer(CConnectedSession * pSession){
 	if (m_CurPlayerNum > 4) return;
+	// 풀방시 입장 실패 전송해야댐
 
 	m_ppConnectedSession[m_CurPlayerNum] = pSession;
 	pSession->GetPlayer()->SetSLOT_ID(m_CurPlayerNum);

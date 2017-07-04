@@ -129,7 +129,7 @@ VOID CServerIocp::PROC_PT_MOUSE_LEFT_ATTACK_CS(CConnectedSession *pConnectedSess
 	m_pRoom->WriteAllExceptMe(SLOT_ID, PT_MOUSE_LEFT_ATTACK_SC, Packet, WRITE_PT_MOUSE_LEFT_ATTACK_SC(Packet,
 		SLOT_ID, bAttack));
 
-	std::cout << SLOT_ID << ", " << bAttack << std::endl;
+	std::cout << SLOT_ID << "Player Attack!" << std::endl;
 	//위치 동기화
 	//pPlayer->SetPlayerPosition(XMLoadFloat3(&xmfPos));
 
@@ -227,6 +227,15 @@ VOID CServerIocp::PROC_PT_MOUSE_BUTTON_INPUT_CS(CConnectedSession *pConnectedSes
 
 VOID CServerIocp::PROC_PT_ROOM_CREATE_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength){
 	m_pRoom->CreateRoom(pConnectedSession);
+	int iRoomCount = 1;
+
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+	m_oConnectedSessionManager.WriteAll(PT_ROOM_LIST_COUNT_SC, Packet, WRITE_PT_ROOM_LIST_COUNT_SC(Packet, iRoomCount));
+
+	for (int i = 0; i < iRoomCount; ++i) {
+		ZeroMemory(Packet, MAX_BUFFER_LENGTH);
+		m_oConnectedSessionManager.WriteAll(PT_ROOM_LIST_SC, Packet, WRITE_PT_ROOM_LIST_SC(Packet, m_pRoom->GetRoomID(), m_pRoom->GetPlayerNum()));
+	}
 }
 
 VOID CServerIocp::PROC_PT_ROOM_DATA_CHANGE_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength){
@@ -244,7 +253,7 @@ VOID CServerIocp::PROC_PT_ROOM_DATA_CHANGE_CS(CConnectedSession * pConnectedSess
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 	//m_pRoom->WriteAllExceptMe(SLOT_ID, PT_ROOM_DATA_CHANGE_SC, Packet, WRITE_PT_ROOM_DATA_CHANGE_SC(Packet, SLOT_ID, Data.READY, Data.CHARACTER));
 	m_pRoom->WriteAll(PT_ROOM_DATA_CHANGE_SC, Packet, WRITE_PT_ROOM_DATA_CHANGE_SC(Packet, SLOT_ID, Data.READY, Data.CHARACTER));
-
+	
 	//room안의 모든 player가 ready면 시작
 	int nReadyPlayer{ 0 };
 	for (int i = 0; i < m_pRoom->GetPlayerNum(); ++i) {
@@ -260,7 +269,7 @@ VOID CServerIocp::PROC_PT_ROOM_DATA_CHANGE_CS(CConnectedSession * pConnectedSess
 
 VOID CServerIocp::PROC_PT_ROOM_JOIN_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength){
 	READ_PACKET(PT_ROOM_JOIN_CS);
-	//Data.ROOM_ID
+	
 	m_pRoom->AddPlayer(pConnectedSession);
 }
 

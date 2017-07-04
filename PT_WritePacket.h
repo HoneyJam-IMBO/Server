@@ -877,3 +877,20 @@ inline DWORD WRITE_PT_MOUSE_LEFT_ATTACK_SC(BYTE *buffer, INT SLOT_ID, bool ATTAC
 	Stream->WriteBOOL(ATTACK);
 	return Stream->GetLength();
 }
+inline DWORD WRITE_PT_ROOM_LIST_COUNT_SC(BYTE *buffer, INT ROOM_COUNT)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(ROOM_COUNT);
+	return Stream->GetLength();
+}
+inline DWORD WRITE_PT_ROOM_LIST_SC(BYTE *buffer, INT ROOM_ID, INT PLAYER_NUM)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(ROOM_ID);
+	Stream->WriteInt32(PLAYER_NUM);
+	return Stream->GetLength();
+}

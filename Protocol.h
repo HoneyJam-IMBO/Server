@@ -322,7 +322,6 @@ typedef enum _PROTOCOL
 	FLOAT	:	Y
 	FLOAT	:	Z
 	*/
-
 		PT_ROOM_JOIN_CS,
 		/*
 		INT : ID
@@ -385,6 +384,12 @@ typedef enum _PROTOCOL
 		/*
 		*/
 		PT_MOUSE_LEFT_ATTACK_CS,
+		/*
+		*/
+		PT_ROOM_LIST_SC,
+		/*
+		*/
+		PT_ROOM_LIST_COUNT_SC,
 		/*
 		*/
 	// 프로토콜 끝

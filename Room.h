@@ -12,6 +12,7 @@ public:
 	
 	bool CreateRoom(CConnectedSession* pReader);
 	int GetPlayerNum() { return m_CurPlayerNum; }
+	int GetRoomID() { return m_RoomNum; }
 	CConnectedSession** GetPlayers() { return m_ppConnectedSession; }
 
 	int GetLoadingComplateNum() { return m_LoadingComplateNum; }

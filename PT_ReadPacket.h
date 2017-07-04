@@ -447,3 +447,20 @@ inline VOID READ_PT_MOUSE_LEFT_ATTACK_SC(BYTE *buffer, _S_PT_MOUSE_LEFT_ATTACK_S
 	Stream->ReadBOOL(&parameter.ATTACK);
 
 }
+inline VOID READ_PT_ROOM_LIST_COUNT_SC(BYTE *buffer, _S_PT_ROOM_LIST_COUNT_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->ReadInt32(&parameter.ROOM_COUNT);
+
+}
+inline VOID READ_PT_ROOM_LIST_SC(BYTE *buffer, _S_PT_ROOM_LIST_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->ReadInt32(&parameter.ROOM_ID);
+	Stream->ReadBOOL(&parameter.PLAYER_NUM);
+
+}

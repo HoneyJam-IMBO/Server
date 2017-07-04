@@ -196,14 +196,22 @@ VOID CServerIocp::OnIoConnected(VOID *pObject)
 	//pConnectedSession->GetPlayer()->GetSpace()->WriteEnterServer_S(pConnectedSession);
 
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-	DWORD dwProtocol = 0;
-	DWORD dwPacketLength = 0;
 
 	INT id = pConnectedSession->GetPlayer()->GetNETWORK_ID();
 	//접속 성공을 알림
 	pConnectedSession->WritePacket(PT_ENTER_SERVER_SUC, Packet, WRITE_PT_ENTER_SERVER_SUC(Packet, id));
 
-
+	// 방 개수 일단 1개얌
+	int iRoomCount = 0;
+	if (m_pRoom->GetPlayerNum() != 0)
+		iRoomCount = 1;
+	ZeroMemory(Packet, MAX_BUFFER_LENGTH);
+	pConnectedSession->WritePacket(PT_ROOM_LIST_COUNT_SC, Packet, WRITE_PT_ROOM_LIST_COUNT_SC(Packet, iRoomCount));
+	
+	for (int i = 0; i < iRoomCount; ++i) {
+		ZeroMemory(Packet, MAX_BUFFER_LENGTH);
+		pConnectedSession->WritePacket(PT_ROOM_LIST_SC, Packet, WRITE_PT_ROOM_LIST_SC(Packet, m_pRoom->GetRoomID(), m_pRoom->GetPlayerNum()));
+	}
 	//CPlayer* pPlayer = pConnectedSession->GetPlayer();
 	//
 	//XMFLOAT3 xmfPos;
