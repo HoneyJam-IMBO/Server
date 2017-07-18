@@ -168,6 +168,7 @@
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="ProcProtocol.cpp" />
     <ClCompile Include="Room.cpp" />
+    <ClCompile Include="RoomManager.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="ServerIocp.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -192,6 +193,7 @@
     <ClInclude Include="PT_Structure.h" />
     <ClInclude Include="PT_WritePacket.h" />
     <ClInclude Include="Room.h" />
+    <ClInclude Include="RoomManager.h" />
     <ClInclude Include="ServerIocp.h" />
     <ClInclude Include="SingletonManager.h" />
     <ClInclude Include="stdafx.h" />

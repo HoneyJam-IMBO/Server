@@ -2,6 +2,7 @@
 //#include "Player.h"
 
 class CGameObject;
+class CRoom;
 // CPacketSession을 상속받은 CConnectedSession
 class CConnectedSession : public CPacketSession
 {
@@ -18,12 +19,14 @@ public:
 	BOOL GetConnected(VOID) { CThreadSync Sync; return m_bConnected; }
 
 	//초기 단계 플레이어 함수들, 나중에 수정 요함
+
+	//CRoom* GetRoomInfo() { return m_pRoom; }
 	CGameObject* GetPlayer() { return m_pPlayer; }
 	void CreatePlayer();
 	//초기 단계 플레이어 함수들, 나중에 수정 요함
 private:
+	//CRoom* m_pRoom;
 	// 접속되었는지 판별하는 변수
 	BOOL m_bConnected;
-
 	CGameObject* m_pPlayer;
 };

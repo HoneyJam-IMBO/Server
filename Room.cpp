@@ -2,11 +2,12 @@
 #include "Room.h"
 
 void CRoom::AddPlayer(CConnectedSession * pSession){
-	if (m_CurPlayerNum > 4) return;
+	if (m_CurPlayerNum >= 4) return;
 	// 풀방시 입장 실패 전송해야댐
 
 	m_ppConnectedSession[m_CurPlayerNum] = pSession;
 	pSession->GetPlayer()->SetSLOT_ID(m_CurPlayerNum);
+	pSession->GetPlayer()->SetROOM_ID(m_RoomNum);
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 
 	std::cout << "ROOM JIN SCC : " << pSession->GetPlayer()->GetSLOT_ID() << " SLOT_COUNT : " << m_CurPlayerNum + 1 << std::endl;
@@ -39,7 +40,7 @@ void CRoom::AddPlayer(CConnectedSession * pSession){
 	m_CurPlayerNum++;
 }
 
-void CRoom::RemovePlayer(INT SLOT_ID){
+int CRoom::RemovePlayer(INT SLOT_ID){
 	for (int i = 0; i < m_CurPlayerNum; ++i) {
 		if (SLOT_ID == i) {
 			//exchange
@@ -63,15 +64,17 @@ void CRoom::RemovePlayer(INT SLOT_ID){
 				int slot_id = m_ppConnectedSession[0]->GetPlayer()->GetSLOT_ID();
 				int characterIndex = m_ppConnectedSession[0]->GetPlayer()->GetCHARACTER();
 				bool bReady = m_ppConnectedSession[0]->GetPlayer()->GetREADY();
+
 				BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 				m_ppConnectedSession[0]->WritePacket(PT_ROOM_JOIN_SC, Packet, WRITE_PT_ROOM_JOIN_SC(Packet,
 					0/*slot id*/, bReady, characterIndex/*kind of char*/));
+
 			}
 			if (m_CurPlayerNum < 1) {//player 아무도 없으면 방 지움
 				m_CurPlayerNum = 0;
 				m_LoadingComplateNum = 0;
 				//delete this;
-				return;
+				return 0;
 			}
 			
 
@@ -86,7 +89,7 @@ void CRoom::RemovePlayer(INT SLOT_ID){
 						slot_id/*slot id*/, bReady, characterIndex/*kind of char*/));
 				}
 			}
-			return;
+			return 1;
 		}
 	}
 
@@ -112,18 +115,18 @@ bool CRoom::WriteAllExceptMe(INT SLOT_ID, DWORD protocol, BYTE * packet, DWORD p
 }
 
 bool CRoom::CreateRoom(CConnectedSession * pReader){
-	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };//나중에 room manager 만들어야함
-	INT ROOM_ID = 0;
+	//BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };//나중에 room manager 만들어야함
+	//INT ROOM_ID = 0;
 
-	std::cout << "Create Room :" << ROOM_ID << std::endl;
+	//std::cout << "Create Room :" << ROOM_ID << std::endl;
 
-	pReader->WritePacket(PT_ROOM_CREATE_SC, Packet, WRITE_PT_ROOM_CREATE_SC(Packet, ROOM_ID));
-	AddPlayer(pReader);
+	//pReader->WritePacket(PT_ROOM_CREATE_SC, Packet, WRITE_PT_ROOM_CREATE_SC(Packet, ROOM_ID));
+	//AddPlayer(pReader);
 	return true;
 }
 
 CRoom::CRoom(int nRoomNum){
-	nRoomNum = nRoomNum;
+	m_RoomNum = nRoomNum;
 
 	m_CurPlayerNum = 0;
 	m_LoadingComplateNum = 0;

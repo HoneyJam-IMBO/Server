@@ -894,3 +894,11 @@ inline DWORD WRITE_PT_ROOM_LIST_SC(BYTE *buffer, INT ROOM_ID, INT PLAYER_NUM)
 	Stream->WriteInt32(PLAYER_NUM);
 	return Stream->GetLength();
 }
+inline DWORD WRITE_PT_FTOWN_READY_CS(BYTE *buffer, INT ROOM_ID, INT PLAYER_NUM)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(ROOM_ID);
+	return Stream->GetLength();
+}

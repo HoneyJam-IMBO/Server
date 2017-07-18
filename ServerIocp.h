@@ -4,6 +4,7 @@
 #include <thread>
 #include <mutex>
 #include "Room.h"
+#include "RoomManager.h"
 
 // CIocp를 상속 받습니다.
 class CServerIocp : public CIocp
@@ -60,7 +61,7 @@ protected:
 	VOID OnIoProcAI(VOID* pObject);
 	//ai처리 콜백 함수
 private:
-	CRoom* m_pRoom{ nullptr };
+	//CRoom* m_pRoom{ nullptr };
 	//ai처리 변수
 	//타이머 스레드
 	std::thread* m_pTimerThread;
@@ -80,7 +81,7 @@ private:
 	// 서버의 Listen을 담당할 개체
 	CNetworkSession *m_pListen;
 	CConnectedSessionManager m_oConnectedSessionManager;
-
+	CRoomManager m_RoomManager;
 	// KeepAlive Thread를 관리하는 핸들값
 	HANDLE m_hKeepThread;
 	// KeepAlive Thread를 종료할때 사용하는 이벤트

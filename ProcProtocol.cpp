@@ -75,6 +75,7 @@ VOID CServerIocp::PROC_PT_FREQUENCY_MOVE_CS(CConnectedSession *pConnectedSession
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 	
 	INT SLOT_ID = pConnectedSession->GetPlayer()->GetSLOT_ID();
+	INT ROOM_ID = pConnectedSession->GetPlayer()->GetROOM_ID();
 	float fPosX = Data.POSX;
 	float fPosY = Data.POSY;
 	float fPosZ = Data.POSZ;
@@ -82,14 +83,11 @@ VOID CServerIocp::PROC_PT_FREQUENCY_MOVE_CS(CConnectedSession *pConnectedSession
 	DWORD dwDirection = Data.DIRECTION;
 	bool bJump = Data.JUMP;
 	
-	//std::cout << dwDirection << ' '<<"ANGLEY -" << fAngleY << std::endl;
-	
-	pConnectedSession->GetPlayer()->GetROOM_ID();
 
-	//m_pRoom->WriteAll(PT_FREQUENCY_MOVE_SC, Packet, WRITE_PT_FREQUENCY_MOVE_SC(Packet,
-	//	SLOT_ID, dwDirection, fAngleY));
 
-	m_pRoom->WriteAllExceptMe(SLOT_ID, PT_FREQUENCY_MOVE_SC, Packet, WRITE_PT_FREQUENCY_MOVE_SC(Packet,
+
+
+	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAllExceptMe(SLOT_ID, PT_FREQUENCY_MOVE_SC, Packet, WRITE_PT_FREQUENCY_MOVE_SC(Packet,
 		SLOT_ID, fPosX, fPosY, fPosZ, fAngleY, dwDirection, bJump));
 		
 	//std::cout << SLOT_ID << ", " << fPosX <<", " << fPosY << ", " << fPosZ << " Angle : "<< fAngleY << std::endl;
@@ -114,22 +112,22 @@ VOID CServerIocp::PROC_PT_MOUSE_LEFT_ATTACK_CS(CConnectedSession *pConnectedSess
 	// 전처리 함수로 간략화
 	READ_PACKET(PT_MOUSE_LEFT_ATTACK_CS);
 	// 실제 코드
-
+	
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 
 	INT SLOT_ID = pConnectedSession->GetPlayer()->GetSLOT_ID();
 	bool bAttack = Data.ATTACK;
 	//std::cout << dwDirection << ' '<<"ANGLEY -" << fAngleY << std::endl;
 
-	pConnectedSession->GetPlayer()->GetROOM_ID();
+	INT ROOM_ID = pConnectedSession->GetPlayer()->GetROOM_ID();
 
 	//m_pRoom->WriteAll(PT_FREQUENCY_MOVE_SC, Packet, WRITE_PT_FREQUENCY_MOVE_SC(Packet,
 	//	SLOT_ID, dwDirection, fAngleY));
 
-	m_pRoom->WriteAllExceptMe(SLOT_ID, PT_MOUSE_LEFT_ATTACK_SC, Packet, WRITE_PT_MOUSE_LEFT_ATTACK_SC(Packet,
+	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAllExceptMe(SLOT_ID, PT_MOUSE_LEFT_ATTACK_SC, Packet, WRITE_PT_MOUSE_LEFT_ATTACK_SC(Packet,
 		SLOT_ID, bAttack));
 
-	std::cout << SLOT_ID << "Player Attack!" << std::endl;
+	//std::cout << SLOT_ID << "Player Attack!" << std::endl;
 	//위치 동기화
 	//pPlayer->SetPlayerPosition(XMLoadFloat3(&xmfPos));
 
@@ -226,61 +224,61 @@ VOID CServerIocp::PROC_PT_MOUSE_BUTTON_INPUT_CS(CConnectedSession *pConnectedSes
 
 
 VOID CServerIocp::PROC_PT_ROOM_CREATE_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength){
-	m_pRoom->CreateRoom(pConnectedSession);
-	int iRoomCount = 1;
+	m_RoomManager.Create(pConnectedSession);
 
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-	m_oConnectedSessionManager.WriteAll(PT_ROOM_LIST_COUNT_SC, Packet, WRITE_PT_ROOM_LIST_COUNT_SC(Packet, iRoomCount));
+	m_oConnectedSessionManager.WriteAll(PT_ROOM_LIST_COUNT_SC, Packet, WRITE_PT_ROOM_LIST_COUNT_SC(Packet, m_RoomManager.GetRoomCount()));
 
-	for (int i = 0; i < iRoomCount; ++i) {
+	for (int i = 0; i < m_RoomManager.GetRoomCount(); ++i) {
 		ZeroMemory(Packet, MAX_BUFFER_LENGTH);
-		m_oConnectedSessionManager.WriteAll(PT_ROOM_LIST_SC, Packet, WRITE_PT_ROOM_LIST_SC(Packet, m_pRoom->GetRoomID(), m_pRoom->GetPlayerNum()));
+		m_oConnectedSessionManager.WriteAll(PT_ROOM_LIST_SC, Packet, WRITE_PT_ROOM_LIST_SC(Packet, m_RoomManager.GetRoomsList()[i]->GetRoomID(), m_RoomManager.GetRoomsList()[i]->GetPlayerNum()));
 	}
 }
 
 VOID CServerIocp::PROC_PT_ROOM_DATA_CHANGE_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength){
 	READ_PACKET(PT_ROOM_DATA_CHANGE_CS);
-	//Data.ROOM_ID
+	INT ROOM_ID = Data.ROOM_ID;
 	INT SLOT_ID = Data.SLOT_ID;
-	m_pRoom->GetPlayers()[SLOT_ID]->GetPlayer()->SetREADY(Data.READY);
-	for (int i = 0; i < m_pRoom->GetPlayerNum(); ++i) {//방안의 전부중
+	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[SLOT_ID]->GetPlayer()->SetREADY(Data.READY);
+	for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i) {//방안의 전부중
 		if (i == SLOT_ID) continue;//나 뺴고
-		if (m_pRoom->GetPlayers()[i]->GetPlayer()->GetCHARACTER() == Data.CHARACTER)//내가 고른 캐릭터 있나 검사
-			Data.CHARACTER = m_pRoom->GetPlayers()[SLOT_ID]->GetPlayer()->GetCHARACTER();//있으면 고른 케릭터 변경하지 않음
+		if (m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->GetCHARACTER() == Data.CHARACTER)//내가 고른 캐릭터 있나 검사
+			Data.CHARACTER = m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[SLOT_ID]->GetPlayer()->GetCHARACTER();//있으면 고른 케릭터 변경하지 않음
 	}
-	m_pRoom->GetPlayers()[SLOT_ID]->GetPlayer()->SetCHARACTER(Data.CHARACTER);//위의 로직 돌고 나온 Data.Chr입력
+	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[SLOT_ID]->GetPlayer()->SetCHARACTER(Data.CHARACTER);//위의 로직 돌고 나온 Data.Chr입력
 
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 	//m_pRoom->WriteAllExceptMe(SLOT_ID, PT_ROOM_DATA_CHANGE_SC, Packet, WRITE_PT_ROOM_DATA_CHANGE_SC(Packet, SLOT_ID, Data.READY, Data.CHARACTER));
-	m_pRoom->WriteAll(PT_ROOM_DATA_CHANGE_SC, Packet, WRITE_PT_ROOM_DATA_CHANGE_SC(Packet, SLOT_ID, Data.READY, Data.CHARACTER));
+	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAll(PT_ROOM_DATA_CHANGE_SC, Packet, WRITE_PT_ROOM_DATA_CHANGE_SC(Packet, SLOT_ID, Data.READY, Data.CHARACTER));
 	
 	//room안의 모든 player가 ready면 시작
 	int nReadyPlayer{ 0 };
-	for (int i = 0; i < m_pRoom->GetPlayerNum(); ++i) {
-		if (m_pRoom->GetPlayers()[i]->GetPlayer()->GetREADY())
+	for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i) {
+		if (m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->GetREADY())
 			nReadyPlayer++;
 	}
 
-	if (nReadyPlayer == m_pRoom->GetPlayerNum()) {//방안의 모든 사람이 ready했으면 출발
-		m_pRoom->WriteAll(PT_FTOWN_START_SC, Packet, WRITE_PT_FTOWN_START_SC(Packet));
+	if (nReadyPlayer == m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum()) {//방안의 모든 사람이 ready했으면 출발
+		m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAll(PT_FTOWN_START_SC, Packet, WRITE_PT_FTOWN_START_SC(Packet));
 	}
 	//room안의 모든 player가 ready면 시작
 }
 
 VOID CServerIocp::PROC_PT_ROOM_JOIN_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength){
 	READ_PACKET(PT_ROOM_JOIN_CS);
-	
-	m_pRoom->AddPlayer(pConnectedSession);
+	m_RoomManager.Join(pConnectedSession, Data.ROOM_NUM);
 }
 
 VOID CServerIocp::PROC_PT_FTOWN_READY_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength){
-	int LoadingComplateNum = m_pRoom->GetLoadingComplateNum();
+	READ_PACKET(PT_FTOWN_READY_CS);
+
+	int LoadingComplateNum = m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetLoadingComplateNum();
 	LoadingComplateNum++;
-	if (LoadingComplateNum == m_pRoom->GetPlayerNum()) {
+	if (LoadingComplateNum == m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetPlayerNum()) {
 		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-		m_pRoom->WriteAll(PT_FTOWN_READY_SC, Packet, WRITE_PT_FTOWN_READY_SC(Packet));
-		m_pRoom->SetLoadingComplateNum(0);
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_FTOWN_READY_SC, Packet, WRITE_PT_FTOWN_READY_SC(Packet));
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
 	}
-	m_pRoom->SetLoadingComplateNum(LoadingComplateNum);
+	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
 	return VOID();
 }

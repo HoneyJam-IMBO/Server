@@ -464,3 +464,12 @@ inline VOID READ_PT_ROOM_LIST_SC(BYTE *buffer, _S_PT_ROOM_LIST_SC &parameter)
 	Stream->ReadBOOL(&parameter.PLAYER_NUM);
 
 }
+inline VOID READ_PT_FTOWN_READY_CS(BYTE *buffer, S_PT_FTOWN_READY_CS &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->ReadInt32(&parameter.ROOM_ID);
+	//Stream->ReadBOOL(&parameter.PLAYER_NUM);
+
+}

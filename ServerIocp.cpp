@@ -201,16 +201,13 @@ VOID CServerIocp::OnIoConnected(VOID *pObject)
 	//접속 성공을 알림
 	pConnectedSession->WritePacket(PT_ENTER_SERVER_SUC, Packet, WRITE_PT_ENTER_SERVER_SUC(Packet, id));
 
-	// 방 개수 일단 1개얌
-	int iRoomCount = 0;
-	if (m_pRoom->GetPlayerNum() != 0)
-		iRoomCount = 1;
-	ZeroMemory(Packet, MAX_BUFFER_LENGTH);
-	pConnectedSession->WritePacket(PT_ROOM_LIST_COUNT_SC, Packet, WRITE_PT_ROOM_LIST_COUNT_SC(Packet, iRoomCount));
 	
-	for (int i = 0; i < iRoomCount; ++i) {
+	ZeroMemory(Packet, MAX_BUFFER_LENGTH);
+	pConnectedSession->WritePacket(PT_ROOM_LIST_COUNT_SC, Packet, WRITE_PT_ROOM_LIST_COUNT_SC(Packet, m_RoomManager.GetRoomCount()));
+	
+	for (int i = 0; i < m_RoomManager.GetRoomCount(); ++i) {
 		ZeroMemory(Packet, MAX_BUFFER_LENGTH);
-		pConnectedSession->WritePacket(PT_ROOM_LIST_SC, Packet, WRITE_PT_ROOM_LIST_SC(Packet, m_pRoom->GetRoomID(), m_pRoom->GetPlayerNum()));
+		pConnectedSession->WritePacket(PT_ROOM_LIST_SC, Packet, WRITE_PT_ROOM_LIST_SC(Packet, m_RoomManager.GetRoomsList()[i]->GetRoomID(), m_RoomManager.GetRoomsList()[i]->GetPlayerNum()));
 	}
 	//CPlayer* pPlayer = pConnectedSession->GetPlayer();
 	//
@@ -258,10 +255,12 @@ VOID CServerIocp::OnIoDisconnected(VOID *pObject)
 	//이 함수에서 이 플레이어가 나갔음을 알림 
 	//space* pSpace = pConnectedSession->GetPlayer()->GetSpace();
 	
-	INT ROOM_ID = pConnectedSession->GetPlayer()->GetROOM_ID();
+	//CRoom* pRoom = pConnectedSession->GetRoom();
 	INT SLOT_ID = pConnectedSession->GetPlayer()->GetSLOT_ID();
-	m_pRoom->RemovePlayer(SLOT_ID);
-
+	INT ROOM_ID = pConnectedSession->GetPlayer()->GetROOM_ID();
+	if(ROOM_ID != -1)
+		m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->RemovePlayer(SLOT_ID);
+	//pRoom->RemovePlayer(SLOT_ID);
 	// 접속을 종료하였기 때문에 개체를 재시작해 줍니다.
 	pConnectedSession->Restart(m_pListen->GetSocket());
 
@@ -446,7 +445,6 @@ BOOL CServerIocp::Begin(VOID)
 	//	End();
 	//	return FALSE;
 	//}
-	m_pRoom = new CRoom(0);
 	m_bIsRun = FALSE;
 
 	std::cout << "Server Start : port - %d, max user - %d" << DEFAULT_PORT << MAX_USER <<std::endl;
@@ -496,6 +494,7 @@ VOID CServerIocp::End(VOID)
 	// IOCP를 종료합니다.
 	CIocp::End();
 
+	m_RoomManager.End();
 	// CConnectedSessionManager를 종료합니다.
 	m_oConnectedSessionManager.End();
 

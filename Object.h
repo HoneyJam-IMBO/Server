@@ -56,9 +56,9 @@ public:
 	CConnectedSession* GetConnectedSession() { return m_pConnectedSession; }
 private:
 	//객체의 고유 id
-	INT NETWORK_ID{ 0 };
-	INT ROOM_ID{ 0 };
-	INT SLOT_ID{ 0 };
+	INT NETWORK_ID{ -1 };
+	INT ROOM_ID{ -1 };
+	INT SLOT_ID{ -1 };
 	BOOL READY{ false };
 	INT CHARACTER{ -1 };
 	//DWORD_PTR 은 64비트 unsigned int다.

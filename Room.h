@@ -5,13 +5,15 @@ class CRoom {
 public:
 	//플레이어 접속
 	void AddPlayer(CConnectedSession* pSession);
-	void RemovePlayer(INT SLOT_ID);
+	int RemovePlayer(INT SLOT_ID);
+	bool CreateRoom(CConnectedSession* pReader);
 
 	bool WriteAll(DWORD protocol, BYTE* packet, DWORD packetLength);
 	bool WriteAllExceptMe(INT SLOT_ID, DWORD protocol, BYTE* packet, DWORD packetLength);
 	
-	bool CreateRoom(CConnectedSession* pReader);
+	
 	int GetPlayerNum() { return m_CurPlayerNum; }
+	void SetRoomID(int RoomNum) { m_RoomNum = RoomNum; }
 	int GetRoomID() { return m_RoomNum; }
 	CConnectedSession** GetPlayers() { return m_ppConnectedSession; }
 
