@@ -5,7 +5,7 @@
 #include <mutex>
 #include "Room.h"
 #include "RoomManager.h"
-
+#include "DataBase.h"
 // CIocp를 상속 받습니다.
 class CServerIocp : public CIocp
 {
@@ -60,11 +60,13 @@ protected:
 	//ai처리 콜백 함수
 	VOID OnIoProcAI(VOID* pObject);
 	//ai처리 콜백 함수
+
+	VOID OnIoProcDB(VOID* pObject);
 private:
 	//CRoom* m_pRoom{ nullptr };
 	//ai처리 변수
 	//타이머 스레드
-	std::thread* m_pTimerThread;
+	//std::thread* m_pTimerThread;
 
 	//명령어 큐
 	std::list<stCOMMAND> m_lCommand;
@@ -79,6 +81,7 @@ private:
 	//HANDLE m_ServerMainEndEventHandle;
 	bool m_bIsRun;
 	// 서버의 Listen을 담당할 개체
+	CDataBase m_DataBase;
 	CNetworkSession *m_pListen;
 	CConnectedSessionManager m_oConnectedSessionManager;
 	CRoomManager m_RoomManager;
@@ -89,7 +92,9 @@ private:
 
 private:
 	// 패킷 처리를 할 함수들
-	VOID PROC_PT_LOGIN_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength);//로그인 요청 처리
+	VOID PROC_PT_LOGIN_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength);
+	VOID PROC_PT_SIGN_UP_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength);
+	//로그인 요청 처리
 
 	//행성 진입 
 	VOID PROC_PT_ENTER_EARTH_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength);//로그인 요청 처리
@@ -104,4 +109,6 @@ private:
 	VOID PROC_PT_ROOM_DATA_CHANGE_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength);
 	VOID PROC_PT_ROOM_JOIN_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength);
 	VOID PROC_PT_FTOWN_READY_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength);
+	VOID PROC_PT_ALDENARD_READY_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength);
+	VOID PROC_PT_SARASEN_READY_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength);
 };

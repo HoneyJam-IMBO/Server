@@ -24,9 +24,27 @@ typedef struct _S_PT_LOGIN_SERVER_SUC{
 
 }S_PT_LOGIN_SERVER_SUC;
 
+typedef struct _S_PT_LOGIN_SERVER_ALREADY {
+
+}S_PT_LOGIN_SERVER_ALREADY;
+
 typedef struct _S_PT_LOGIN_SERVER_FAIL {
 
 }S_PT_LOGIN_SERVER_FAIL;
+
+typedef struct _S_PT_SIGN_UP_CS {
+	WCHAR ID[10];
+	WCHAR PW[10];
+}S_PT_SIGN_UP_CS;
+
+
+typedef struct _S_PT_SIGN_UP_SUC_SC {
+
+}S_PT_SIGN_UP_SUC_SC;
+
+typedef struct _S_PT_SIGN_UP_FAIL_SC {
+
+}S_PT_SIGN_UP_FAIL_SC;
 
 ///////////////////////////행성진입
 typedef struct _S_PT_ENTER_EARTH_CS {
@@ -341,3 +359,11 @@ typedef struct _S_PT_ROOM_LIST_SC
 typedef struct _S_PT_FTONW_READY_CS {
 	INT ROOM_ID;
 } S_PT_FTOWN_READY_CS;
+
+typedef struct _S_PT_ALDENARD_READY_CS {
+	INT ROOM_ID;
+} S_PT_ALDENARD_READY_CS;
+
+typedef struct _S_PT_SARASEN_READY_CS {
+	INT ROOM_ID;
+} S_PT_SARASEN_READY_CS;

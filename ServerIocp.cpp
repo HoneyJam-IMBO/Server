@@ -11,11 +11,19 @@ DWORD WINAPI TimerThreadCallback(LPVOID parameter)
 	return 0;
 }
 
+DWORD WINAPI DataBaseThreadCallback(LPVOID parameter) {
+	CServerIocp *Owner = (CServerIocp*)parameter;
+	Owner->KeepThreadCallback();
+
+	return 0;
+}
+
+
 VOID CServerIocp::TimerThreadCallback(){
 	m_bIsRun = TRUE;
 	//
 	int currentTime = 0;
-	std::cout << "Timer Start" << std::endl;
+	//std::cout << "Timer Start" << std::endl;
 	//게임 중일때 동안
 	while (m_bIsRun){
 
@@ -118,7 +126,7 @@ BOOL CServerIocp::BeginServerMain(){
 	//WaitForSingleObject(m_ServerMainStartupEventHandle, INFINITE);
 	//타이머 쓰레드 
 
-	m_pTimerThread = new std::thread(::TimerThreadCallback, this);
+	//m_pTimerThread = new std::thread(::TimerThreadCallback, this);
 
 	return TRUE;
 
@@ -202,13 +210,7 @@ VOID CServerIocp::OnIoConnected(VOID *pObject)
 	pConnectedSession->WritePacket(PT_ENTER_SERVER_SUC, Packet, WRITE_PT_ENTER_SERVER_SUC(Packet, id));
 
 	
-	ZeroMemory(Packet, MAX_BUFFER_LENGTH);
-	pConnectedSession->WritePacket(PT_ROOM_LIST_COUNT_SC, Packet, WRITE_PT_ROOM_LIST_COUNT_SC(Packet, m_RoomManager.GetRoomCount()));
 	
-	for (int i = 0; i < m_RoomManager.GetRoomCount(); ++i) {
-		ZeroMemory(Packet, MAX_BUFFER_LENGTH);
-		pConnectedSession->WritePacket(PT_ROOM_LIST_SC, Packet, WRITE_PT_ROOM_LIST_SC(Packet, m_RoomManager.GetRoomsList()[i]->GetRoomID(), m_RoomManager.GetRoomsList()[i]->GetPlayerNum()));
-	}
 	//CPlayer* pPlayer = pConnectedSession->GetPlayer();
 	//
 	//XMFLOAT3 xmfPos;
@@ -295,6 +297,9 @@ VOID CServerIocp::OnIoRead(VOID *pObject, DWORD dwDataLength)
 			case PT_LOGIN_CS:
 				PROC_PT_LOGIN_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
 				break;
+			case PT_SIGN_UP_CS:
+				PROC_PT_SIGN_UP_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
+				break;
 			//행성진입
 			case PT_ENTER_EARTH_CS:
 				PROC_PT_ENTER_EARTH_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
@@ -318,6 +323,10 @@ VOID CServerIocp::OnIoRead(VOID *pObject, DWORD dwDataLength)
 				PROC_PT_ROOM_JOIN_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
 				break;
 			case PT_FTOWN_READY_CS:
+				PROC_PT_FTOWN_READY_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
+			case PT_ALDENARD_READY_CS:
+				PROC_PT_FTOWN_READY_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
+			case PT_SARASEN_READY_CS:
 				PROC_PT_FTOWN_READY_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
 			case PT_FREQUENCY_MOVE_CS:
 				PROC_PT_FREQUENCY_MOVE_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
@@ -358,6 +367,78 @@ VOID CServerIocp::OnIoProcAI(VOID *pObject)
 	//나 중 에 해 야 할 곳 
 
 	//나 중 에 해 야 할 곳 
+}
+
+VOID CServerIocp::OnIoProcDB(VOID* pObject) {
+	int ret = 0 ;
+	DB_ST* pDBST = reinterpret_cast<DB_ST*>(pObject);
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+	CConnectedSession* pSession = reinterpret_cast<CConnectedSession*>(pDBST->pSession);
+	//해서 얻어온 플레이어 객체에게 결과를 통보
+
+	switch (pDBST->etype) {
+	case LOADID:
+		if (pSession->GetDBevent() == LOADID) // 만약 로그인 요청이였다면
+		{
+			if (wcscmp(pDBST->idpw.ID, pSession->GetID()) != 0)
+				ret++;
+			if (wcscmp(pDBST->idpw.PW, pSession->GetPW()) != 0)
+				ret++;
+			if (true == m_oConnectedSessionManager.IsThisIDLogin(pDBST->idpw.PW))
+				ret = -1;
+
+			if (ret == 0) { // 로그인 성공
+				pSession->WritePacket(PT_LOGIN_SERVER_SUC, Packet, WRITE_PT_LOGIN_SERVER_SUC(Packet));
+
+				// 로긴 성공하면 방 목록 정보를 보낸다
+				ZeroMemory(Packet, MAX_BUFFER_LENGTH);
+				pSession->WritePacket(PT_ROOM_LIST_COUNT_SC, Packet, WRITE_PT_ROOM_LIST_COUNT_SC(Packet, m_RoomManager.GetRoomCount()));
+
+				for (int i = 0; i < m_RoomManager.GetRoomCount(); ++i) {
+					ZeroMemory(Packet, MAX_BUFFER_LENGTH);
+					pSession->WritePacket(PT_ROOM_LIST_SC, Packet, WRITE_PT_ROOM_LIST_SC(Packet, m_RoomManager.GetRoomsList()[i]->GetRoomID(), m_RoomManager.GetRoomsList()[i]->GetPlayerNum()));
+				////
+
+				}
+			}
+			else if(ret == -1)
+				pSession->WritePacket(PT_LOGIN_SERVER_ALREADY, Packet, WRITE_PT_LOGIN_SERVER_FAIL(Packet));
+			else
+				pSession->WritePacket(PT_LOGIN_SERVER_FAIL, Packet, WRITE_PT_LOGIN_SERVER_FAIL(Packet));
+
+			
+		}
+		else if (pSession->GetDBevent() == SIGNUP) // 원래 회원가입 요청이였다면
+		{
+			if (wcscmp(pDBST->idpw.ID, pSession->GetID()) == 0)
+				ret++;
+
+			if (ret == 0) {
+				// DB 회원가입 요청
+				stDBQUEUE dbQueueData;
+				dbQueueData.etype = SIGNUP;
+				dbQueueData.pSession = pDBST->pSession;
+				wsprintf(dbQueueData.ExecCode, L"EXEC dbo.Sign_Up_SP2 %s, %s", pDBST->idpw.ID, pDBST->idpw.PW);
+
+				m_DataBase.pushDBEvent(dbQueueData);
+
+				pSession->WritePacket(PT_SIGN_UP_SUC_SC, Packet, WRITE_PT_SIGN_UP_SUC_SC(Packet));
+			}
+			else
+				pSession->WritePacket(PT_SIGN_UP_FAIL_SC, Packet, WRITE_PT_SIGN_UP_FAIL_SC(Packet));
+		}
+
+		break;
+	//case SIGNUP:
+	//	break;
+	}
+	
+	//else if (eUPDATE_PLAYER_XY == (*pType)) {
+		//타입을 알았으니 해당 타입으로 형변환
+		//CConnectedSession* pSession = reinterpret_cast<CConnectedSession*>(pObject);
+		//해서 얻어온 플레이어 객체에게 결과를 통보
+		//std::cout << pCmp->x << ", " << pCmp->y << std::endl;;
+
 }
 BOOL CServerIocp::Begin(VOID)
 {
@@ -446,7 +527,8 @@ BOOL CServerIocp::Begin(VOID)
 	//	return FALSE;
 	//}
 	m_bIsRun = FALSE;
-
+	m_DataBase.Begin(mIocpHandle);
+	m_RoomManager.Begin();
 	std::cout << "Server Start : port - %d, max user - %d" << DEFAULT_PORT << MAX_USER <<std::endl;
 
 	return TRUE;
@@ -489,11 +571,11 @@ VOID CServerIocp::End(VOID)
 
 
 	//타이머 쓰레드 종료 검사
-	m_pTimerThread->join();
+	//m_pTimerThread->join();
 
 	// IOCP를 종료합니다.
 	CIocp::End();
-
+	m_DataBase.End();
 	m_RoomManager.End();
 	// CConnectedSessionManager를 종료합니다.
 	m_oConnectedSessionManager.End();

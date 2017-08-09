@@ -6,9 +6,28 @@ inline VOID READ_PT_LOGIN_SERVER_SUC(BYTE *buffer, S_PT_LOGIN_SERVER_SUC &parame
 	Stream->SetBuffer(buffer);
 
 }
+inline VOID READ_PT_LOGIN_SERVER_ALREADY(BYTE *buffer, S_PT_LOGIN_SERVER_FAIL &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
 
+}
 
 inline VOID READ_PT_LOGIN_SERVER_FAIL(BYTE *buffer, S_PT_LOGIN_SERVER_FAIL &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+}
+inline VOID READ_PT_SIGN_UP_SUC_SC(BYTE *buffer, S_PT_SIGN_UP_SUC_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+}
+
+
+inline VOID READ_PT_SIGN_UP_FAIL_SC(BYTE *buffer, S_PT_SIGN_UP_FAIL_SC &parameter)
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);
@@ -59,7 +78,15 @@ inline VOID READ_PT_LOGIN_CS(BYTE *buffer, S_PT_LOGIN_CS &parameter)
 	Stream->ReadWCHARs(parameter.PW, 10);
 	
 }
+inline VOID READ_PT_SIGN_UP_CS(BYTE *buffer, S_PT_SIGN_UP_CS &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
 
+	Stream->ReadWCHARs(parameter.ID, 10);
+	Stream->ReadWCHARs(parameter.PW, 10);
+
+}
 
 
 inline VOID READ_PT_ENTER_SERVER_ALL(BYTE *buffer, S_PT_ENTER_SERVER_ALL &parameter)
@@ -465,6 +492,26 @@ inline VOID READ_PT_ROOM_LIST_SC(BYTE *buffer, _S_PT_ROOM_LIST_SC &parameter)
 
 }
 inline VOID READ_PT_FTOWN_READY_CS(BYTE *buffer, S_PT_FTOWN_READY_CS &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->ReadInt32(&parameter.ROOM_ID);
+	//Stream->ReadBOOL(&parameter.PLAYER_NUM);
+
+}
+
+inline VOID READ_PT_ALDENARD_READY_CS(BYTE *buffer, S_PT_ALDENARD_READY_CS &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->ReadInt32(&parameter.ROOM_ID);
+	//Stream->ReadBOOL(&parameter.PLAYER_NUM);
+
+}
+
+inline VOID READ_PT_SARASEN_READY_CS(BYTE *buffer, S_PT_SARASEN_READY_CS &parameter)
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);

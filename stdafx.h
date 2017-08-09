@@ -82,6 +82,7 @@ inline XMVECTOR&& D3DXVec3ToXMVec(const D3DXVECTOR3& d3dxv, float wParam = 0.f)
 #include "ServerIocp.h"
 //#include "Space.h"
 
+
 //°ø°£
 //#include "Space.h"
 #define RANDOM_DIR ((rand() * 0xFFFFFF) / RAND_MAX )-1
@@ -98,7 +99,10 @@ inline XMVECTOR&& D3DXVec3ToXMVec(const D3DXVECTOR3& d3dxv, float wParam = 0.f)
 #include <algorithm>
 #include <list>
 #include <vector>
+#include <queue>
+//#include <sqlext.h>
 
+using namespace std;
 
 static void gotoxy(int x, int y, const char *msg, ...){
 #ifdef _DEBUG

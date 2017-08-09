@@ -16,6 +16,8 @@ public:
 	// 접속된 모든 ConnectedSession에 패킷을 전송하는 함수
 	VOID WriteAll(DWORD dwProtocol, BYTE *pData, DWORD dwLength);
 
+	BOOL IsThisIDLogin(WCHAR * id);
+
 	//vecter getter
 	std::vector<CConnectedSession*> GetvConnectedSessions() { return m_vConnectedSessions; }
 private:

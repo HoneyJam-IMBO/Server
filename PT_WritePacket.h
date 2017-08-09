@@ -280,8 +280,30 @@ inline DWORD WRITE_PT_LOGIN_SERVER_SUC(BYTE *buffer)
 
 	return Stream->GetLength();
 }
+inline DWORD WRITE_PT_LOGIN_SERVER_ALREADY(BYTE *buffer)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
 
+	return Stream->GetLength();
+}
 inline DWORD WRITE_PT_LOGIN_SERVER_FAIL(BYTE *buffer)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	return Stream->GetLength();
+}
+
+inline DWORD WRITE_PT_SIGN_UP_SUC_SC(BYTE *buffer)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	return Stream->GetLength();
+}
+
+inline DWORD WRITE_PT_SIGN_UP_FAIL_SC(BYTE *buffer)
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);
@@ -331,7 +353,17 @@ inline DWORD WRITE_PT_LOGIN_CS(BYTE *buffer, WCHAR* ID, WCHAR* PW)
 
 	return Stream->GetLength();
 }
+inline DWORD WRITE_PT_SIGN_UP_CS(BYTE *buffer, WCHAR* ID, WCHAR* PW)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
 
+	Stream->WriteWCHARs(ID, 10);
+	Stream->WriteWCHARs(PW, 10);
+
+
+	return Stream->GetLength();
+}
 
 inline DWORD WRITE_PT_ENTER_SERVER_FAIL(BYTE *buffer)
 {
@@ -894,7 +926,23 @@ inline DWORD WRITE_PT_ROOM_LIST_SC(BYTE *buffer, INT ROOM_ID, INT PLAYER_NUM)
 	Stream->WriteInt32(PLAYER_NUM);
 	return Stream->GetLength();
 }
-inline DWORD WRITE_PT_FTOWN_READY_CS(BYTE *buffer, INT ROOM_ID, INT PLAYER_NUM)
+inline DWORD WRITE_PT_FTOWN_READY_CS(BYTE *buffer, INT ROOM_ID)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(ROOM_ID);
+	return Stream->GetLength();
+}
+inline DWORD WRITE_PT_ALDENARD_READY_CS(BYTE *buffer, INT ROOM_ID)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(ROOM_ID);
+	return Stream->GetLength();
+}
+inline DWORD WRITE_PT_SARASEN_READY_CS(BYTE *buffer, INT ROOM_ID)
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);

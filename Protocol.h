@@ -144,8 +144,22 @@ typedef enum _PROTOCOL
 	//로그인 성공
 	PT_LOGIN_SERVER_SUC,
 
+	//이미 로그인 접속
+	PT_LOGIN_SERVER_ALREADY,
+
 	//로그인 실패
 	PT_LOGIN_SERVER_FAIL,
+
+	PT_SIGN_UP_CS,
+	/*
+	WCHAR : ID[10]
+	WCHAR : PW[10]
+	*/
+	//회원가입 성공
+	PT_SIGN_UP_SUC_SC,
+	//아이디 중복
+	PT_SIGN_UP_FAIL_SC,
+
 	///////////////////////////////////로그인
 
 	////////////////////////////////행성진입
@@ -374,10 +388,35 @@ typedef enum _PROTOCOL
 		PT_FTOWN_START_SC,
 		/*
 		*/
+		PT_ALDENARD_START_CS,
+		/*
+		*/
+		PT_ALDENARD_START_SC,
+		/*
+		*/
+		PT_SARASEN_START_CS,
+		/*
+		*/
+		PT_SARASEN_START_SC,
+		/*
+		*/
 		PT_FTOWN_READY_CS,
 		/*
 		*/
+		
 		PT_FTOWN_READY_SC,
+		/*
+		*/
+		PT_ALDENARD_READY_CS,
+		/*
+		*/
+		PT_ALDENARD_READY_SC,
+		/*
+		*/
+		PT_SARASEN_READY_CS,
+		/*
+		*/
+		PT_SARASEN_READY_SC,
 		/*
 		*/
 		PT_MOUSE_LEFT_ATTACK_SC,

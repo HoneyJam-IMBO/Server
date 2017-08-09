@@ -80,5 +80,24 @@ VOID CConnectedSessionManager::WriteAll(DWORD dwProtocol, BYTE *pData, DWORD dwL
 		// 접속되어 있는 개체일 경우만 WritePacket을 해 줍니다.
 		if (m_vConnectedSessions[i]->GetConnected())
 			m_vConnectedSessions[i]->WritePacket(dwProtocol, pData, dwLength);
+		
 	}
+}
+
+BOOL CConnectedSessionManager::IsThisIDLogin(WCHAR* id) {
+	int ret = 0;
+	for (DWORD i = 0; i < m_vConnectedSessions.size(); ++i) {
+		CConnectedSession* ConnectedSession = m_vConnectedSessions[i];
+
+		if (ConnectedSession->GetConnected()) {
+			if (0 == wcscmp(ConnectedSession->GetID(), id))
+				ret++;
+
+		}
+	}
+
+	if (ret == 1) // 나 혼자면
+		return false;
+
+	return true;
 }

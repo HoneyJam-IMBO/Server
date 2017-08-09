@@ -16,20 +16,52 @@ VOID CServerIocp::PROC_PT_LOGIN_CS(CConnectedSession *pConnectedSession, DWORD d
 	// 전처리 함수로 간략화
 	READ_PACKET(PT_LOGIN_CS);
 
-	//database검색 요청 실행
-	//그리고 원래는 끝나야 하나 아직 데이타 베이스 넣기도 않았으니 바로 승인
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 
-	//아직 플레이어 객체id 부여하지 않음
-	//Begin을 안함 게임 시작해야 부여해 줄꺼임 
-	if (true) {
-		pConnectedSession->WritePacket(PT_LOGIN_SERVER_SUC, Packet, WRITE_PT_LOGIN_SERVER_SUC(Packet));
+	pConnectedSession->SetID(Data.ID);
+	pConnectedSession->SetPW(Data.PW);
+	pConnectedSession->SetDBevent(LOADID);
 
-	}
-	else {
-		pConnectedSession->WritePacket(PT_LOGIN_SERVER_FAIL, Packet, WRITE_PT_LOGIN_SERVER_FAIL(Packet));
-		
-	}
+
+	
+	stDBQUEUE dbQueueData;
+	dbQueueData.etype = LOADID;
+	dbQueueData.pSession = pConnectedSession;
+	wsprintf(dbQueueData.ExecCode, L"EXEC dbo.ID_Check_SP2 %s", Data.ID);
+
+	m_DataBase.pushDBEvent(dbQueueData);
+
+	// DataBase 유저데이터 불러오기
+	//idpw = m_DataBase.LoadUserInfo(recv_id);
+
+
+
+}
+
+VOID CServerIocp::PROC_PT_SIGN_UP_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength)
+{
+	// 전처리 함수로 간략화
+	READ_PACKET(PT_SIGN_UP_CS);
+
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+
+	pConnectedSession->SetID(Data.ID);
+	pConnectedSession->SetPW(Data.PW);
+	pConnectedSession->SetDBevent(SIGNUP);
+
+	S_IDPW idpw;
+	wcscpy(idpw.ID, Data.ID);
+	wcscpy(idpw.PW, Data.PW);
+
+	stDBQUEUE dbQueueData;
+	dbQueueData.etype = LOADID;
+	dbQueueData.pSession = pConnectedSession;
+	wsprintf(dbQueueData.ExecCode, L"EXEC dbo.ID_Check_SP2 %s", Data.ID);
+
+	m_DataBase.pushDBEvent(dbQueueData);
+
+	
+
 }
 
 ///////////////////////행서엉진입
@@ -277,6 +309,34 @@ VOID CServerIocp::PROC_PT_FTOWN_READY_CS(CConnectedSession * pConnectedSession, 
 	if (LoadingComplateNum == m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetPlayerNum()) {
 		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_FTOWN_READY_SC, Packet, WRITE_PT_FTOWN_READY_SC(Packet));
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
+	}
+	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
+	return VOID();
+}
+
+VOID CServerIocp::PROC_PT_ALDENARD_READY_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
+	READ_PACKET(PT_ALDENARD_READY_CS);
+
+	int LoadingComplateNum = m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetLoadingComplateNum();
+	LoadingComplateNum++;
+	if (LoadingComplateNum == m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetPlayerNum()) {
+		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_ALDENARD_READY_SC, Packet, WRITE_PT_FTOWN_READY_SC(Packet));
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
+	}
+	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
+	return VOID();
+}
+
+VOID CServerIocp::PROC_PT_SARASEN_READY_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
+	READ_PACKET(PT_SARASEN_READY_CS);
+
+	int LoadingComplateNum = m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetLoadingComplateNum();
+	LoadingComplateNum++;
+	if (LoadingComplateNum == m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetPlayerNum()) {
+		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_SARASEN_READY_SC, Packet, WRITE_PT_FTOWN_READY_SC(Packet));
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
 	}
 	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);

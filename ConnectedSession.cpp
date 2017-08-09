@@ -5,7 +5,9 @@ CConnectedSession::CConnectedSession(VOID)
 {
 	// 접속 되었는지 판별하는 변수
 	m_bConnected = FALSE;
-
+	myID[0] = L'\0';
+	myPW[0] = L'\0';
+	
 	//생성자에서 만들고 재활용
 	m_pPlayer = new CGameObject(this);
 
@@ -38,7 +40,8 @@ BOOL CConnectedSession::Restart(SOCKET hListenSocket)
 	CThreadSync Sync;
 
 	m_pPlayer->Restart();
-
+	myID[0] = L'\0';
+	myPW[0] = L'\0';
 
 	// 개체를 종료해 줍니다.
 	End();
