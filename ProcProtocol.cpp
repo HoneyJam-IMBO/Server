@@ -318,6 +318,22 @@ VOID CServerIocp::PROC_PT_FTOWN_READY_CS(CConnectedSession * pConnectedSession, 
 	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
 	return VOID();
 }
+
+
+VOID CServerIocp::PROC_PT_FTOWN_NPC_READY_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
+	READ_PACKET(PT_FTOWN_NPC_READY_CS);
+
+	int LoadingComplateNum = m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetLoadingComplateNum();
+	LoadingComplateNum++;
+	if (LoadingComplateNum == m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetPlayerNum()) {
+		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_FTOWN_NPC_READY_SC, Packet, WRITE_PT_FTOWN_NPC_READY_SC(Packet));
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
+	}
+	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
+	return VOID();
+}
+
 VOID CServerIocp::PROC_PT_ALDENARD_START_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
 	READ_PACKET(PT_ALDENARD_START_CS);
 

@@ -388,12 +388,7 @@ typedef enum _PROTOCOL
 		PT_FTOWN_START_SC,
 		/*
 		*/
-		PT_FTOWN_NPC_READY_CS,
-		/*
-		*/
-		PT_FTOWN_NPC_READY_SC,
-		/*
-		*/
+	
 		PT_ALDENARD_START_CS, // 스타트가 로딩 시작알림
 		/*
 		*/
@@ -414,7 +409,7 @@ typedef enum _PROTOCOL
 		/*
 		*/
 
-		PT_FTOWN_NPC_READY_CS, // 레디가 로딩 완료 알림
+		PT_FTOWN_NPC_READY_CS, 
 		/*
 		*/
 		PT_FTOWN_NPC_READY_SC,
