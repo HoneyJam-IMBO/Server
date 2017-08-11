@@ -292,6 +292,10 @@ VOID CServerIocp::PROC_PT_ROOM_DATA_CHANGE_CS(CConnectedSession * pConnectedSess
 
 	if (nReadyPlayer == m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum()) {//방안의 모든 사람이 ready했으면 출발
 		m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAll(PT_FTOWN_START_SC, Packet, WRITE_PT_FTOWN_START_SC(Packet));
+
+		for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i)
+			m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->SetREADY(0);
+
 	}
 	//room안의 모든 player가 ready면 시작
 }
@@ -303,7 +307,7 @@ VOID CServerIocp::PROC_PT_ROOM_JOIN_CS(CConnectedSession * pConnectedSession, DW
 
 VOID CServerIocp::PROC_PT_FTOWN_READY_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength){
 	READ_PACKET(PT_FTOWN_READY_CS);
-
+	
 	int LoadingComplateNum = m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetLoadingComplateNum();
 	LoadingComplateNum++;
 	if (LoadingComplateNum == m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetPlayerNum()) {
@@ -314,7 +318,19 @@ VOID CServerIocp::PROC_PT_FTOWN_READY_CS(CConnectedSession * pConnectedSession, 
 	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
 	return VOID();
 }
+VOID CServerIocp::PROC_PT_ALDENARD_START_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
+	READ_PACKET(PT_ALDENARD_START_CS);
 
+	int LoadingComplateNum = m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetLoadingComplateNum();
+	LoadingComplateNum++;
+	if (LoadingComplateNum == m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetPlayerNum()) {
+		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_ALDENARD_START_SC, Packet, WRITE_PT_ALDENARD_START_SC(Packet));
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
+	}
+	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
+	return VOID();
+}
 VOID CServerIocp::PROC_PT_ALDENARD_READY_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
 	READ_PACKET(PT_ALDENARD_READY_CS);
 
@@ -322,13 +338,26 @@ VOID CServerIocp::PROC_PT_ALDENARD_READY_CS(CConnectedSession * pConnectedSessio
 	LoadingComplateNum++;
 	if (LoadingComplateNum == m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetPlayerNum()) {
 		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_ALDENARD_READY_SC, Packet, WRITE_PT_FTOWN_READY_SC(Packet));
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_ALDENARD_READY_SC, Packet, WRITE_PT_ALDENARD_READY_SC(Packet));
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
 	}
 	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
 	return VOID();
 }
 
+VOID CServerIocp::PROC_PT_SARASEN_START_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
+	READ_PACKET(PT_SARASEN_START_CS);
+
+	int LoadingComplateNum = m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetLoadingComplateNum();
+	LoadingComplateNum++;
+	if (LoadingComplateNum == m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetPlayerNum()) {
+		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_SARASEN_START_SC, Packet, WRITE_PT_SARASEN_START_SC(Packet));
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
+	}
+	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
+	return VOID();
+}
 VOID CServerIocp::PROC_PT_SARASEN_READY_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
 	READ_PACKET(PT_SARASEN_READY_CS);
 
@@ -336,7 +365,7 @@ VOID CServerIocp::PROC_PT_SARASEN_READY_CS(CConnectedSession * pConnectedSession
 	LoadingComplateNum++;
 	if (LoadingComplateNum == m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetPlayerNum()) {
 		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_SARASEN_READY_SC, Packet, WRITE_PT_FTOWN_READY_SC(Packet));
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_SARASEN_READY_SC, Packet, WRITE_PT_SARASEN_READY_SC(Packet));
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
 	}
 	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);

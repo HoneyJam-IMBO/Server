@@ -840,17 +840,6 @@ inline DWORD WRITE_PT_FTOWN_START_SC(BYTE *buffer)
 }
 
 
-inline DWORD WRITE_PT_FTOWN_READY_CS(BYTE *buffer)
-{
-	CStreamSP Stream;
-	std::cout << "FTOWN_READY_CS -  : " << std::endl;
-
-
-	Stream->SetBuffer(buffer);
-
-	return Stream->GetLength();
-}
-
 
 inline DWORD WRITE_PT_FTOWN_READY_SC(BYTE *buffer)
 {
@@ -942,11 +931,61 @@ inline DWORD WRITE_PT_ALDENARD_READY_CS(BYTE *buffer, INT ROOM_ID)
 	Stream->WriteInt32(ROOM_ID);
 	return Stream->GetLength();
 }
+inline DWORD WRITE_PT_ALDENARD_READY_SC(BYTE *buffer)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	return Stream->GetLength();
+}
+
+inline DWORD WRITE_PT_ALDENARD_START_CS(BYTE *buffer, INT ROOM_ID, INT SLOT_ID)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(ROOM_ID);
+	Stream->WriteInt32(SLOT_ID);
+	return Stream->GetLength();
+}
+
+inline DWORD WRITE_PT_ALDENARD_START_SC(BYTE *buffer)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	return Stream->GetLength();
+}
+
 inline DWORD WRITE_PT_SARASEN_READY_CS(BYTE *buffer, INT ROOM_ID)
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);
 
 	Stream->WriteInt32(ROOM_ID);
+	return Stream->GetLength();
+}
+inline DWORD WRITE_PT_SARASEN_READY_SC(BYTE *buffer)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	return Stream->GetLength();
+}
+inline DWORD WRITE_PT_SARASEN_START_CS(BYTE *buffer, INT ROOM_ID, INT SLOT_ID)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(ROOM_ID);
+	Stream->WriteInt32(SLOT_ID);
+	return Stream->GetLength();
+}
+
+inline DWORD WRITE_PT_SARASEN_START_SC(BYTE *buffer)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
 	return Stream->GetLength();
 }

@@ -511,6 +511,16 @@ inline VOID READ_PT_ALDENARD_READY_CS(BYTE *buffer, S_PT_ALDENARD_READY_CS &para
 
 }
 
+inline VOID READ_PT_ALDENARD_START_CS(BYTE *buffer, S_PT_ALDENARD_START_CS &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->ReadInt32(&parameter.ROOM_ID);
+	Stream->ReadBOOL(&parameter.SLOT_ID);
+
+}
+
 inline VOID READ_PT_SARASEN_READY_CS(BYTE *buffer, S_PT_SARASEN_READY_CS &parameter)
 {
 	CStreamSP Stream;
@@ -518,5 +528,15 @@ inline VOID READ_PT_SARASEN_READY_CS(BYTE *buffer, S_PT_SARASEN_READY_CS &parame
 
 	Stream->ReadInt32(&parameter.ROOM_ID);
 	//Stream->ReadBOOL(&parameter.PLAYER_NUM);
+
+}
+
+inline VOID READ_PT_SARASEN_START_CS(BYTE *buffer, S_PT_SARASEN_START_CS &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->ReadInt32(&parameter.ROOM_ID);
+	Stream->ReadBOOL(&parameter.SLOT_ID);
 
 }
