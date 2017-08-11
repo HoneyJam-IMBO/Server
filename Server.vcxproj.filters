@@ -78,6 +78,9 @@
     <ClCompile Include="DataBase.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Boss.cpp">
+      <Filter>소스 파일\Room</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Protocol.h">
@@ -136,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="DataBase.h">
       <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
+      <Filter>소스 파일\Room</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

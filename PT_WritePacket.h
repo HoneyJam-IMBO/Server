@@ -923,6 +923,25 @@ inline DWORD WRITE_PT_FTOWN_READY_CS(BYTE *buffer, INT ROOM_ID)
 	Stream->WriteInt32(ROOM_ID);
 	return Stream->GetLength();
 }
+
+inline DWORD WRITE_PT_FTOWN_NPC_READY_CS(BYTE *buffer, INT ROOM_ID, INT SLOT_ID)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(ROOM_ID);
+	Stream->WriteInt32(SLOT_ID);
+	return Stream->GetLength();
+}
+
+inline DWORD WRITE_PT_FTOWN_NPC_READY_SC(BYTE *buffer)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	return Stream->GetLength();
+}
+
 inline DWORD WRITE_PT_ALDENARD_READY_CS(BYTE *buffer, INT ROOM_ID)
 {
 	CStreamSP Stream;
@@ -931,6 +950,8 @@ inline DWORD WRITE_PT_ALDENARD_READY_CS(BYTE *buffer, INT ROOM_ID)
 	Stream->WriteInt32(ROOM_ID);
 	return Stream->GetLength();
 }
+
+
 inline DWORD WRITE_PT_ALDENARD_READY_SC(BYTE *buffer)
 {
 	CStreamSP Stream;

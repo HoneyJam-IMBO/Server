@@ -268,7 +268,7 @@ VOID CServerIocp::OnIoDisconnected(VOID *pObject)
 	INT SLOT_ID = pConnectedSession->GetPlayer()->GetSLOT_ID();
 	INT ROOM_ID = pConnectedSession->GetPlayer()->GetROOM_ID();
 	if(ROOM_ID != -1)
-		m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->RemovePlayer(SLOT_ID);
+		m_RoomManager.Leave(ROOM_ID, SLOT_ID);
 	//pRoom->RemovePlayer(SLOT_ID);
 	// 접속을 종료하였기 때문에 개체를 재시작해 줍니다.
 	pConnectedSession->Restart(m_pListen->GetSocket());
@@ -331,10 +331,16 @@ VOID CServerIocp::OnIoRead(VOID *pObject, DWORD dwDataLength)
 				break;
 			case PT_FTOWN_READY_CS:
 				PROC_PT_FTOWN_READY_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
+			case PT_FTOWN_NPC_READY_CS:
+				PROC_PT_FTOWN_NPC_READY_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
+			case PT_ALDENARD_START_CS:
+				PROC_PT_ALDENARD_START_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
 			case PT_ALDENARD_READY_CS:
-				PROC_PT_FTOWN_READY_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
+				PROC_PT_ALDENARD_READY_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
+			case PT_SARASEN_START_CS:
+				PROC_PT_SARASEN_START_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
 			case PT_SARASEN_READY_CS:
-				PROC_PT_FTOWN_READY_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
+				PROC_PT_SARASEN_READY_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
 			case PT_FREQUENCY_MOVE_CS:
 				PROC_PT_FREQUENCY_MOVE_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
 				break;

@@ -495,13 +495,30 @@ inline VOID READ_PT_FTOWN_READY_CS(BYTE *buffer, S_PT_FTOWN_READY_CS &parameter)
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);
-
+	std::cout << "FTOWN_READY" << std::endl;
 	Stream->ReadInt32(&parameter.ROOM_ID);
 
 	std::cout << "FTOWN_ READY!" << std::endl;
 	//Stream->ReadBOOL(&parameter.PLAYER_NUM);
+}
+
+inline VOID READ_PT_FTOWN_NPC_READY_CS(BYTE *buffer, S_PT_FTOWN_NPC_READY_CS &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->ReadInt32(&parameter.ROOM_ID);
+	Stream->ReadInt32(&parameter.SLOT_ID);
 
 }
+
+inline VOID READ_PT_FTOWN_NPC_READY_SC(BYTE *buffer, S_PT_FTOWN_NPC_READY_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+}
+
 
 inline VOID READ_PT_ALDENARD_READY_CS(BYTE *buffer, S_PT_ALDENARD_READY_CS &parameter)
 {
