@@ -209,8 +209,15 @@ VOID CServerIocp::OnIoConnected(VOID *pObject)
 	//접속 성공을 알림
 	pConnectedSession->WritePacket(PT_ENTER_SERVER_SUC, Packet, WRITE_PT_ENTER_SERVER_SUC(Packet, id));
 
-	
-	
+	// 로긴 성공하면 방 목록 정보를 보낸다
+	ZeroMemory(Packet, MAX_BUFFER_LENGTH);
+	pConnectedSession->WritePacket(PT_ROOM_LIST_COUNT_SC, Packet, WRITE_PT_ROOM_LIST_COUNT_SC(Packet, m_RoomManager.GetRoomCount()));
+
+	for (int i = 0; i < m_RoomManager.GetRoomCount(); ++i) {
+		ZeroMemory(Packet, MAX_BUFFER_LENGTH);
+		pConnectedSession->WritePacket(PT_ROOM_LIST_SC, Packet, WRITE_PT_ROOM_LIST_SC(Packet, m_RoomManager.GetRoomsList()[i]->GetRoomID(), m_RoomManager.GetRoomsList()[i]->GetPlayerNum()));
+		////
+	}
 	//CPlayer* pPlayer = pConnectedSession->GetPlayer();
 	//
 	//XMFLOAT3 xmfPos;

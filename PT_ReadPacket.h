@@ -497,6 +497,8 @@ inline VOID READ_PT_FTOWN_READY_CS(BYTE *buffer, S_PT_FTOWN_READY_CS &parameter)
 	Stream->SetBuffer(buffer);
 
 	Stream->ReadInt32(&parameter.ROOM_ID);
+
+	std::cout << "FTOWN_ READY!" << std::endl;
 	//Stream->ReadBOOL(&parameter.PLAYER_NUM);
 
 }
