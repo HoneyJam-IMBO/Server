@@ -60,6 +60,7 @@ bool CRoomManager::Leave(int Room_ID, int Slot_ID)
 				m_vRoomsList.erase(iter);
 				m_iRoomCount--;
 			}
+			return true;
 		}
 	}
 	//for (; iter != m_mlpObject[tag::TAG_DYNAMIC_OBJECT].end(); )
