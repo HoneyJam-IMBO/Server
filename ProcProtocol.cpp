@@ -418,6 +418,7 @@ VOID CServerIocp::PROC_PT_ALDENARD_READY_CS(CConnectedSession * pConnectedSessio
 		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_ALDENARD_READY_SC, Packet, WRITE_PT_ALDENARD_READY_SC(Packet));
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
+		return VOID();
 	}
 	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
 	return VOID();
@@ -451,6 +452,7 @@ VOID CServerIocp::PROC_PT_SARASEN_START_CS(CConnectedSession * pConnectedSession
 VOID CServerIocp::PROC_PT_SARASEN_READY_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
 	READ_PACKET(PT_SARASEN_READY_CS);
 
+	cout << "SARASEN LOADING READY!" << endl;
 	int LoadingComplateNum = m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetLoadingComplateNum();
 	LoadingComplateNum++;
 	if (LoadingComplateNum == m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetPlayerNum()) {
@@ -458,6 +460,8 @@ VOID CServerIocp::PROC_PT_SARASEN_READY_CS(CConnectedSession * pConnectedSession
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_SARASEN_READY_SC, Packet, WRITE_PT_SARASEN_READY_SC(Packet));
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetpBoss()->SetHP(10000);
+		cout << "SARASEN LOADING START!" << endl;
+		return VOID();
 	}
 	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
 	return VOID();
