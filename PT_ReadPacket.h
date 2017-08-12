@@ -682,3 +682,31 @@ inline VOID READ_PT_SARASEN_BOSS_ACTION_CAMERA_READY_COMP_SC(BYTE *buffer, S_PT_
 	Stream->SetBuffer(buffer);
 }
 
+
+inline VOID READ_PT_SKILL_COLLISION_TO_TARGET_CS(BYTE *buffer, S_PT_SKILL_COLLISION_TO_TARGET_CS &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+	Stream->ReadInt32(&parameter.ROOM_ID);
+	Stream->ReadInt32(&parameter.MY_SLOT_ID);
+	Stream->ReadInt32(&parameter.TARGET_SLOT_ID);
+	Stream->ReadInt32(&parameter.CHARACTER);
+	Stream->ReadInt32(&parameter.SKILL_NUM);
+
+}
+
+
+inline VOID READ_PT_BOSS_HP_SC(BYTE *buffer, S_PT_BOSS_HP_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+	Stream->ReadInt32(&parameter.BOSS_HP);
+}
+
+
+
+inline VOID READ_PT_BOSS_CLEAR_SC(BYTE *buffer, S_PT_BOSS_CLEAR_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+}

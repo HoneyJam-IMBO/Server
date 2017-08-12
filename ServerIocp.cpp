@@ -306,6 +306,9 @@ VOID CServerIocp::OnIoRead(VOID *pObject, DWORD dwDataLength)
 			case PT_MOUSE_LEFT_ATTACK_CS:
 				PROC_PT_MOUSE_LEFT_ATTACK_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
 				break;
+			case PT_SKILL_COLLISION_TO_TARGET_CS:
+				PROC_PT_SKILL_COLLISION_TO_TARGET_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
+				break;
 			//클라이언트가 매 프레임마다 자신의 위치를 전송해 주는 원시적인 프로토콜
 			case PT_LOGIN_CS:
 				PROC_PT_LOGIN_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);

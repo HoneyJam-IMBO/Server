@@ -511,3 +511,21 @@ VOID CServerIocp::PROC_PT_SARASEN_BOSS_ACTION_CAMERA_READY_CS(CConnectedSession 
 
 	return VOID();
 }
+
+
+VOID CServerIocp::PROC_PT_SKILL_COLLISION_TO_TARGET_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
+	READ_PACKET(PT_SKILL_COLLISION_TO_TARGET_CS);
+
+	//Data.ROOM_ID;
+	//Data.MY_SLOT_ID;
+	//Data.TARGET_SLOT_ID;
+	//Data.CHARACTER;
+	//Data.SKILL_NUM;
+	if (Data.TARGET_SLOT_ID == 99) // 99´Â º¸½º
+	{
+
+	}
+	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetpBoss()->DamageToHP();
+
+	return VOID();
+}

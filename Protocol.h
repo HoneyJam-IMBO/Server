@@ -434,6 +434,7 @@ typedef enum _PROTOCOL
 		PT_SKILL_COLLISION_TO_TARGET_CS,
 		/*
 
+		INT : ROOM_ID
 		INT : MY_SLOT_ID
 		INT : TARGET_SLOT_ID
 		INT : CHARACTER
@@ -441,7 +442,7 @@ typedef enum _PROTOCOL
 
 		*/
 
-		PT_SKILL_RESULT_BOSS_HP_SC,
+		PT_BOSS_HP_SC,
 		/*
 
 		INT : HP
