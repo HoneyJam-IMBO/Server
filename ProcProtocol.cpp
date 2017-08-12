@@ -454,6 +454,7 @@ VOID CServerIocp::PROC_PT_SARASEN_READY_CS(CConnectedSession * pConnectedSession
 		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_SARASEN_READY_SC, Packet, WRITE_PT_SARASEN_READY_SC(Packet));
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetpBoss()->SetHP(10000);
 	}
 	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
 	return VOID();
@@ -521,11 +522,43 @@ VOID CServerIocp::PROC_PT_SKILL_COLLISION_TO_TARGET_CS(CConnectedSession * pConn
 	//Data.TARGET_SLOT_ID;
 	//Data.CHARACTER;
 	//Data.SKILL_NUM;
-	if (Data.TARGET_SLOT_ID == 99) // 99는 보스
+	if (Data.TARGET_SLOT_ID == 9) // 9는 보스
 	{
-
+		int retval = m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetpBoss()->DamageToHP(DamageFromCharacterSkill(Data.CHARACTER, Data.SKILL_NUM));
+		
+		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+		if(retval > 0)
+			m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_BOSS_HP_SC, Packet, WRITE_PT_BOSS_HP_SC(Packet, retval));
+		else {
+			m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_BOSS_CLEAR_SC, Packet, WRITE_PT_BOSS_CLEAR_SC(Packet));
+		}
 	}
-	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetpBoss()->DamageToHP();
+	else{
+	}
 
 	return VOID();
+}
+
+int CServerIocp::DamageFromCharacterSkill(INT Character, INT SkillNum) {
+	int retval = 0;
+
+	if (SkillNum == 99)
+		return 9999999;
+
+	switch (Character) {
+	case 0: // 레인저
+		break;
+	case 1: // 기사
+		break;
+	case 2: // 
+		break;
+	case 3:
+		break;
+	case 4:
+		break;
+	case 5: // 바드
+		break;
+	}
+
+	return retval;
 }

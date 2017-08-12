@@ -132,10 +132,11 @@ CRoom::CRoom(int nRoomNum){
 	m_LoadingComplateNum = 0;
 
 	m_ppConnectedSession = new CConnectedSession*[4];
-
+	m_pBoss = new CBoss();
 	m_pBoss->begin(10000);
 }
 
 CRoom::~CRoom(){
 	delete[] m_ppConnectedSession;
+	delete m_pBoss;
 }
