@@ -516,8 +516,41 @@ inline VOID READ_PT_FTOWN_NPC_READY_SC(BYTE *buffer, S_PT_FTOWN_NPC_READY_SC &pa
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);
+	Stream->ReadInt32(&parameter.SLOT_ID);
+	Stream->ReadBOOL(&parameter.READY);
+}
+
+
+inline VOID READ_PT_FTOWN_NPC_READY_COMP_SC(BYTE *buffer, S_PT_FTOWN_NPC_READY_COMP_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
 
 }
+
+
+inline VOID READ_PT_FTOWN_BOSS_ACTION_CAMERA_READY_SC(BYTE *buffer, S_PT_FTOWN_BOSS_ACTION_CAMERA_READY_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+	Stream->ReadInt32(&parameter.SLOT_ID);
+	Stream->ReadBOOL(&parameter.READY);
+}
+
+inline VOID READ_PT_FTOWN_BOSS_ACTION_CAMERA_READY_CS(BYTE *buffer, S_PT_FTOWN_BOSS_ACTION_CAMERA_READY_CS &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+	Stream->ReadInt32(&parameter.ROOM_ID);
+	Stream->ReadInt32(&parameter.SLOT_ID);
+}
+
+inline VOID READ_PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC(BYTE *buffer, S_PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+}
+
 
 inline VOID READ_PT_FTOWN_NPC2_READY_CS(BYTE *buffer, S_PT_FTOWN_NPC2_READY_CS &parameter)
 {
@@ -533,9 +566,16 @@ inline VOID READ_PT_FTOWN_NPC2_READY_SC(BYTE *buffer, S_PT_FTOWN_NPC2_READY_SC &
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);
+	Stream->ReadInt32(&parameter.SLOT_ID);
+	Stream->ReadBOOL(&parameter.READY);
 
 }
+inline VOID READ_PT_FTOWN_NPC2_READY_COMP_SC(BYTE *buffer, S_PT_FTOWN_NPC2_READY_COMP_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
 
+}
 
 inline VOID READ_PT_ALDENARD_READY_CS(BYTE *buffer, S_PT_ALDENARD_READY_CS &parameter)
 {
@@ -546,17 +586,38 @@ inline VOID READ_PT_ALDENARD_READY_CS(BYTE *buffer, S_PT_ALDENARD_READY_CS &para
 	//Stream->ReadBOOL(&parameter.PLAYER_NUM);
 
 }
+inline VOID READ_PT_ALDENARD_READY_SC(BYTE *buffer, S_PT_ALDENARD_READY_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
 
-inline VOID READ_PT_ALDENARD_START_CS(BYTE *buffer, S_PT_ALDENARD_START_CS &parameter)
+}
+
+
+inline VOID READ_PT_SARASEN_START_CS(BYTE *buffer, S_PT_SARASEN_START_CS &parameter)
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);
 
 	Stream->ReadInt32(&parameter.ROOM_ID);
-	Stream->ReadBOOL(&parameter.SLOT_ID);
+	Stream->ReadInt32(&parameter.SLOT_ID);
+
+} 
+inline VOID READ_PT_SARASEN_START_SC(BYTE *buffer, S_PT_SARASEN_START_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+	
+	Stream->ReadInt32(&parameter.SLOT_ID);
+	Stream->ReadBOOL(&parameter.READY);
 
 }
+inline VOID READ_PT_SARASEN_START_COMP_SC(BYTE *buffer, S_PT_SARASEN_START_COMP_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
 
+}
 inline VOID READ_PT_SARASEN_READY_CS(BYTE *buffer, S_PT_SARASEN_READY_CS &parameter)
 {
 	CStreamSP Stream;
@@ -566,13 +627,58 @@ inline VOID READ_PT_SARASEN_READY_CS(BYTE *buffer, S_PT_SARASEN_READY_CS &parame
 	//Stream->ReadBOOL(&parameter.PLAYER_NUM);
 
 }
+inline VOID READ_PT_SARASEN_READY_SC(BYTE *buffer, S_PT_SARASEN_READY_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
 
-inline VOID READ_PT_SARASEN_START_CS(BYTE *buffer, S_PT_SARASEN_START_CS &parameter)
+
+}
+
+inline VOID READ_PT_SARASEN_BOSS_START_CS(BYTE *buffer, S_PT_SARASEN_BOSS_START_CS &parameter)
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);
 
 	Stream->ReadInt32(&parameter.ROOM_ID);
-	Stream->ReadBOOL(&parameter.SLOT_ID);
+	Stream->ReadInt32(&parameter.SLOT_ID);
 
 }
+inline VOID READ_PT_SARASEN_BOSS_START_SC(BYTE *buffer, S_PT_SARASEN_BOSS_START_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->ReadInt32(&parameter.SLOT_ID);
+	Stream->ReadBOOL(&parameter.READY);
+
+}
+inline VOID READ_PT_SARASEN_BOSS_START_COMP_SC(BYTE *buffer, S_PT_SARASEN_BOSS_START_COMP_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+}
+
+inline VOID READ_PT_SARASEN_BOSS_ACTION_CAMERA_READY_SC(BYTE *buffer, S_PT_SARASEN_BOSS_ACTION_CAMERA_READY_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+	Stream->ReadInt32(&parameter.SLOT_ID);
+	Stream->ReadBOOL(&parameter.READY);
+}
+
+inline VOID READ_PT_SARASEN_BOSS_ACTION_CAMERA_READY_CS(BYTE *buffer, S_PT_SARASEN_BOSS_ACTION_CAMERA_READY_CS &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+	Stream->ReadInt32(&parameter.ROOM_ID);
+	Stream->ReadInt32(&parameter.SLOT_ID);
+}
+
+inline VOID READ_PT_SARASEN_BOSS_ACTION_CAMERA_READY_COMP_SC(BYTE *buffer, S_PT_SARASEN_BOSS_ACTION_CAMERA_READY_COMP_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+}
+

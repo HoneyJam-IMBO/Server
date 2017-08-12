@@ -415,6 +415,45 @@ typedef enum _PROTOCOL
 		PT_FTOWN_NPC_READY_SC,
 		/*
 		*/
+		PT_FTOWN_NPC_READY_COMP_SC,
+		/*
+		*/
+		PT_FTOWN_BOSS_ACTION_CAMERA_READY_CS,
+		/*
+		*/
+
+		PT_FTOWN_BOSS_ACTION_CAMERA_READY_SC,
+		/*
+		*/
+
+	
+		PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC,
+			/*
+			*/
+
+		PT_SKILL_COLLISION_TO_TARGET_CS,
+		/*
+
+		INT : MY_SLOT_ID
+		INT : TARGET_SLOT_ID
+		INT : CHARACTER
+		INT : SKILL_NUM
+
+		*/
+
+		PT_SKILL_RESULT_BOSS_HP_SC,
+		/*
+
+		INT : HP
+
+		*/
+
+		PT_BOSS_CLEAR_SC,
+		/*
+		*/
+
+
+
 
 		PT_FTOWN_NPC2_READY_CS,
 		/*
@@ -422,7 +461,9 @@ typedef enum _PROTOCOL
 		PT_FTOWN_NPC2_READY_SC,
 		/*
 		*/
-
+		PT_FTOWN_NPC2_READY_COMP_SC,
+		/*
+		*/
 
 
 
@@ -438,6 +479,32 @@ typedef enum _PROTOCOL
 		PT_SARASEN_READY_SC,
 		/*
 		*/
+
+		PT_SARASEN_START_COMP_SC,
+		/*
+		*/
+
+			PT_SARASEN_BOSS_START_CS,
+			/*
+			*/
+			PT_SARASEN_BOSS_START_SC,
+			/*
+			*/
+			PT_SARASEN_BOSS_START_COMP_SC,
+			/*
+			*/
+
+			PT_SARASEN_BOSS_ACTION_CAMERA_READY_SC,
+			/*
+			*/
+
+			PT_SARASEN_BOSS_ACTION_CAMERA_READY_CS,
+			/*
+			*/
+			PT_SARASEN_BOSS_ACTION_CAMERA_READY_COMP_SC,
+			/*
+			*/
+
 		PT_MOUSE_LEFT_ATTACK_SC,
 		/*
 		*/

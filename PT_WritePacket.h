@@ -934,13 +934,57 @@ inline DWORD WRITE_PT_FTOWN_NPC_READY_CS(BYTE *buffer, INT ROOM_ID, INT SLOT_ID)
 	return Stream->GetLength();
 }
 
-inline DWORD WRITE_PT_FTOWN_NPC_READY_SC(BYTE *buffer)
+inline DWORD WRITE_PT_FTOWN_NPC_READY_SC(BYTE *buffer, INT SLOT_ID, BOOL READY)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(SLOT_ID);
+	Stream->WriteBOOL(READY);
+	return Stream->GetLength();
+}
+inline DWORD WRITE_PT_FTOWN_NPC_READY_COMP_SC(BYTE *buffer)
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);
 
 	return Stream->GetLength();
 }
+
+
+
+
+
+inline DWORD WRITE_PT_FTOWN_BOSS_ACTION_CAMERA_READY_CS(BYTE *buffer, INT ROOM_ID, INT SLOT_ID)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(ROOM_ID);
+	Stream->WriteInt32(SLOT_ID);
+	return Stream->GetLength();
+}
+
+inline DWORD WRITE_PT_FTOWN_BOSS_ACTION_CAMERA_READY_SC(BYTE *buffer, INT SLOT_ID, BOOL READY)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(SLOT_ID);
+	Stream->WriteBOOL(READY);
+	return Stream->GetLength();
+}
+inline DWORD WRITE_PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC(BYTE *buffer)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	return Stream->GetLength();
+}
+
+
+
+
 inline DWORD WRITE_PT_FTOWN_NPC2_READY_CS(BYTE *buffer, INT ROOM_ID, INT SLOT_ID)
 {
 	CStreamSP Stream;
@@ -951,7 +995,16 @@ inline DWORD WRITE_PT_FTOWN_NPC2_READY_CS(BYTE *buffer, INT ROOM_ID, INT SLOT_ID
 	return Stream->GetLength();
 }
 
-inline DWORD WRITE_PT_FTOWN_NPC2_READY_SC(BYTE *buffer)
+inline DWORD WRITE_PT_FTOWN_NPC2_READY_SC(BYTE *buffer, INT SLOT_ID, BOOL READY)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(SLOT_ID);
+	Stream->WriteBOOL(READY);
+	return Stream->GetLength();
+}
+inline DWORD WRITE_PT_FTOWN_NPC2_READY_COMP_SC(BYTE *buffer)
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);
@@ -976,7 +1029,11 @@ inline DWORD WRITE_PT_ALDENARD_READY_SC(BYTE *buffer)
 	return Stream->GetLength();
 }
 
-inline DWORD WRITE_PT_ALDENARD_START_CS(BYTE *buffer, INT ROOM_ID, INT SLOT_ID)
+
+
+
+
+inline DWORD WRITE_PT_SARASEN_START_CS(BYTE *buffer, INT ROOM_ID, INT SLOT_ID)
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);
@@ -986,7 +1043,18 @@ inline DWORD WRITE_PT_ALDENARD_START_CS(BYTE *buffer, INT ROOM_ID, INT SLOT_ID)
 	return Stream->GetLength();
 }
 
-inline DWORD WRITE_PT_ALDENARD_START_SC(BYTE *buffer)
+inline DWORD WRITE_PT_SARASEN_START_SC(BYTE *buffer, INT SLOT_ID, BOOL READY)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(SLOT_ID);	
+	Stream->WriteBOOL(READY);
+
+	return Stream->GetLength();
+}
+
+inline DWORD WRITE_PT_SARASEN_START_COMP_SC(BYTE *buffer)
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);
@@ -1002,6 +1070,7 @@ inline DWORD WRITE_PT_SARASEN_READY_CS(BYTE *buffer, INT ROOM_ID)
 	Stream->WriteInt32(ROOM_ID);
 	return Stream->GetLength();
 }
+
 inline DWORD WRITE_PT_SARASEN_READY_SC(BYTE *buffer)
 {
 	CStreamSP Stream;
@@ -1009,7 +1078,10 @@ inline DWORD WRITE_PT_SARASEN_READY_SC(BYTE *buffer)
 
 	return Stream->GetLength();
 }
-inline DWORD WRITE_PT_SARASEN_START_CS(BYTE *buffer, INT ROOM_ID, INT SLOT_ID)
+
+
+
+inline DWORD WRITE_PT_SARASEN_BOSS_START_CS(BYTE *buffer, INT ROOM_ID, INT SLOT_ID)
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);
@@ -1019,7 +1091,47 @@ inline DWORD WRITE_PT_SARASEN_START_CS(BYTE *buffer, INT ROOM_ID, INT SLOT_ID)
 	return Stream->GetLength();
 }
 
-inline DWORD WRITE_PT_SARASEN_START_SC(BYTE *buffer)
+inline DWORD WRITE_PT_SARASEN_BOSS_START_SC(BYTE *buffer, INT SLOT_ID, BOOL READY)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(SLOT_ID);
+	Stream->WriteBOOL(READY);
+
+	return Stream->GetLength();
+}
+
+inline DWORD WRITE_PT_SARASEN_BOSS_START_COMP_SC(BYTE *buffer)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	return Stream->GetLength();
+}
+
+
+
+inline DWORD WRITE_PT_SARASEN_BOSS_ACTION_CAMERA_READY_CS(BYTE *buffer, INT ROOM_ID, INT SLOT_ID)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(ROOM_ID);
+	Stream->WriteInt32(SLOT_ID);
+	return Stream->GetLength();
+}
+
+inline DWORD WRITE_PT_SARASEN_BOSS_ACTION_CAMERA_READY_SC(BYTE *buffer, INT SLOT_ID, BOOL READY)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(SLOT_ID);
+	Stream->WriteBOOL(READY);
+	return Stream->GetLength();
+}
+inline DWORD WRITE_PT_SARASEN_BOSS_ACTION_CAMERA_READY_COMP_SC(BYTE *buffer)
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);

@@ -328,31 +328,84 @@ VOID CServerIocp::PROC_PT_FTOWN_READY_CS(CConnectedSession * pConnectedSession, 
 
 VOID CServerIocp::PROC_PT_FTOWN_NPC_READY_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
 	READ_PACKET(PT_FTOWN_NPC_READY_CS);
+	INT ROOM_ID = Data.ROOM_ID;
+	INT SLOT_ID = Data.SLOT_ID;
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 
-	int LoadingComplateNum = m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetLoadingComplateNum();
-	LoadingComplateNum++;
-	if (LoadingComplateNum == m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetPlayerNum()) {
-		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_FTOWN_NPC_READY_SC, Packet, WRITE_PT_FTOWN_NPC_READY_SC(Packet));
-		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
+	// 자신 레디 상태로 바꾸고
+	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[SLOT_ID]->GetPlayer()->SetREADY(true);
+
+	int nReadyPlayer{ 0 };
+	for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i) {
+		if (m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->GetREADY())
+			nReadyPlayer++;
 	}
-	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
+	if (nReadyPlayer == m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum()) {//방안의 모든 사람이 ready했으면 출발
+		m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAll(PT_FTOWN_NPC_READY_COMP_SC, Packet, WRITE_PT_FTOWN_NPC_READY_COMP_SC(Packet));
+		for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i)
+			m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->SetREADY(0);
+		return;
+	}
+
+	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAllExceptMe(SLOT_ID, PT_FTOWN_NPC_READY_SC, Packet, WRITE_PT_FTOWN_NPC_READY_SC(Packet,
+		SLOT_ID, true));
+
+	return VOID();
+}
+VOID CServerIocp::PROC_PT_FTOWN_BOSS_ACTION_CAMERA_READY_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
+	READ_PACKET(PT_FTOWN_BOSS_ACTION_CAMERA_READY_CS);
+	INT ROOM_ID = Data.ROOM_ID;
+	INT SLOT_ID = Data.SLOT_ID;
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+
+	// 자신 레디 상태로 바꾸고
+	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[SLOT_ID]->GetPlayer()->SetREADY(true);
+
+	int nReadyPlayer{ 0 };
+	for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i) {
+		if (m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->GetREADY())
+			nReadyPlayer++;
+	}
+	if (nReadyPlayer == m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum()) {//방안의 모든 사람이 ready했으면 출발
+		m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAll(PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC, Packet, WRITE_PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC(Packet));
+		for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i)
+			m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->SetREADY(0);
+		return;
+	}
+
+	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAllExceptMe(SLOT_ID, PT_FTOWN_BOSS_ACTION_CAMERA_READY_SC, Packet, WRITE_PT_FTOWN_BOSS_ACTION_CAMERA_READY_SC(Packet,
+		SLOT_ID, true));
+
+	return VOID();
+}
+VOID CServerIocp::PROC_PT_FTOWN_NPC2_READY_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
+	READ_PACKET(PT_FTOWN_NPC2_READY_CS);
+	INT ROOM_ID = Data.ROOM_ID;
+	INT SLOT_ID = Data.SLOT_ID;
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+
+	// 자신 레디 상태로 바꾸고
+	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[SLOT_ID]->GetPlayer()->SetREADY(true);
+
+	int nReadyPlayer{ 0 };
+	for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i) {
+		if (m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->GetREADY())
+			nReadyPlayer++;
+	}
+	if (nReadyPlayer == m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum()) {//방안의 모든 사람이 ready했으면 출발
+		m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAll(PT_FTOWN_NPC2_READY_COMP_SC, Packet, WRITE_PT_FTOWN_NPC_READY_COMP_SC(Packet));
+		for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i)
+			m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->SetREADY(0);
+		return;
+	}
+
+	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAllExceptMe(SLOT_ID, PT_FTOWN_NPC2_READY_SC, Packet, WRITE_PT_FTOWN_NPC_READY_SC(Packet,
+		SLOT_ID, true));
+
 	return VOID();
 }
 
-VOID CServerIocp::PROC_PT_ALDENARD_START_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
-	READ_PACKET(PT_ALDENARD_START_CS);
 
-	int LoadingComplateNum = m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetLoadingComplateNum();
-	LoadingComplateNum++;
-	if (LoadingComplateNum == m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetPlayerNum()) {
-		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_ALDENARD_START_SC, Packet, WRITE_PT_ALDENARD_START_SC(Packet));
-		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
-	}
-	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
-	return VOID();
-}
 VOID CServerIocp::PROC_PT_ALDENARD_READY_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
 	READ_PACKET(PT_ALDENARD_READY_CS);
 
@@ -369,15 +422,27 @@ VOID CServerIocp::PROC_PT_ALDENARD_READY_CS(CConnectedSession * pConnectedSessio
 
 VOID CServerIocp::PROC_PT_SARASEN_START_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
 	READ_PACKET(PT_SARASEN_START_CS);
+	INT ROOM_ID = Data.ROOM_ID;
+	INT SLOT_ID = Data.SLOT_ID;
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+	// 자신 레디 상태로 바꾸고
+	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[SLOT_ID]->GetPlayer()->SetREADY(true);
 
-	int LoadingComplateNum = m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetLoadingComplateNum();
-	LoadingComplateNum++;
-	if (LoadingComplateNum == m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetPlayerNum()) {
-		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_SARASEN_START_SC, Packet, WRITE_PT_SARASEN_START_SC(Packet));
-		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
+	int nReadyPlayer{ 0 };
+	for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i) {
+		if (m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->GetREADY())
+			nReadyPlayer++;
 	}
-	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
+	if (nReadyPlayer == m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum()) {//방안의 모든 사람이 ready했으면 출발
+		m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAll(PT_SARASEN_START_COMP_SC, Packet, WRITE_PT_SARASEN_START_COMP_SC(Packet));
+		for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i)
+			m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->SetREADY(0);
+		return;
+	}
+
+	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAllExceptMe(SLOT_ID, PT_SARASEN_START_SC, Packet, WRITE_PT_SARASEN_START_SC(Packet,
+		SLOT_ID, true));
+
 	return VOID();
 }
 VOID CServerIocp::PROC_PT_SARASEN_READY_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
@@ -391,5 +456,58 @@ VOID CServerIocp::PROC_PT_SARASEN_READY_CS(CConnectedSession * pConnectedSession
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
 	}
 	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
+	return VOID();
+}
+
+
+VOID CServerIocp::PROC_PT_SARASEN_BOSS_START_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
+	READ_PACKET(PT_SARASEN_BOSS_START_CS);
+	INT ROOM_ID = Data.ROOM_ID;
+	INT SLOT_ID = Data.SLOT_ID;
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+	// 자신 레디 상태로 바꾸고
+	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[SLOT_ID]->GetPlayer()->SetREADY(true);
+
+	int nReadyPlayer{ 0 };
+	for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i) {
+		if (m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->GetREADY())
+			nReadyPlayer++;
+	}
+	if (nReadyPlayer == m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum()) {//방안의 모든 사람이 ready했으면 출발
+		m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAll(PT_SARASEN_BOSS_START_COMP_SC, Packet, WRITE_PT_SARASEN_BOSS_START_COMP_SC(Packet));
+		for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i)
+			m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->SetREADY(0);
+		return;
+	}
+
+	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAllExceptMe(SLOT_ID, PT_SARASEN_BOSS_START_SC, Packet, WRITE_PT_SARASEN_BOSS_START_SC(Packet,
+		SLOT_ID, true));
+
+	return VOID();
+}
+
+VOID CServerIocp::PROC_PT_SARASEN_BOSS_ACTION_CAMERA_READY_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
+	READ_PACKET(PT_SARASEN_BOSS_ACTION_CAMERA_READY_CS);
+	INT ROOM_ID = Data.ROOM_ID;
+	INT SLOT_ID = Data.SLOT_ID;
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+	// 자신 레디 상태로 바꾸고
+	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[SLOT_ID]->GetPlayer()->SetREADY(true);
+
+	int nReadyPlayer{ 0 };
+	for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i) {
+		if (m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->GetREADY())
+			nReadyPlayer++;
+	}
+	if (nReadyPlayer == m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum()) {//방안의 모든 사람이 ready했으면 출발
+		m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAll(PT_SARASEN_BOSS_ACTION_CAMERA_READY_COMP_SC, Packet, WRITE_PT_SARASEN_BOSS_ACTION_CAMERA_READY_COMP_SC(Packet));
+		for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i)
+			m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->SetREADY(0);
+		return;
+	}
+
+	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAllExceptMe(SLOT_ID, PT_SARASEN_BOSS_ACTION_CAMERA_READY_SC, Packet, WRITE_PT_SARASEN_BOSS_ACTION_CAMERA_READY_SC(Packet,
+		SLOT_ID, true));
+
 	return VOID();
 }
