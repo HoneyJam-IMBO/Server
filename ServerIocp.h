@@ -91,6 +91,7 @@ private:
 	HANDLE m_hKeepThreadDestroyEvent;
 
 private:
+	VOID PROC_PT_TEMP(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength);
 	// 패킷 처리를 할 함수들
 	VOID PROC_PT_LOGIN_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength);
 	VOID PROC_PT_SIGN_UP_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength);

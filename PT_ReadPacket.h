@@ -1,5 +1,9 @@
 #pragma once
+inline VOID READ_PT_TEMP(BYTE *buffer, S_PT_TEMP &parameter) {
 
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+}
 inline VOID READ_PT_LOGIN_SERVER_SUC(BYTE *buffer, S_PT_LOGIN_SERVER_SUC &parameter)
 {
 	CStreamSP Stream;
@@ -440,8 +444,7 @@ inline VOID READ_PT_FREQUENCY_MOVE_CS(BYTE *buffer, S_PT_FREQUENCY_MOVE_CS &para
 	Stream->ReadFloat(&parameter.POSY);
 	Stream->ReadFloat(&parameter.POSZ);
 	Stream->ReadFloat(&parameter.ANGLEY);
-	Stream->ReadDWORD(&parameter.DIRECTION);
-	Stream->ReadBOOL(&parameter.JUMP);
+	Stream->ReadInt32(&parameter.ANIMNUM);
 
 }
 inline VOID READ_PT_FREQUENCY_MOVE_SC(BYTE *buffer, S_PT_FREQUENCY_MOVE_SC &parameter)
@@ -454,8 +457,7 @@ inline VOID READ_PT_FREQUENCY_MOVE_SC(BYTE *buffer, S_PT_FREQUENCY_MOVE_SC &para
 	Stream->ReadFloat(&parameter.POSY);
 	Stream->ReadFloat(&parameter.POSZ);
 	Stream->ReadFloat(&parameter.ANGLEY);
-	Stream->ReadDWORD(&parameter.DIRECTION);
-	Stream->ReadBOOL(&parameter.JUMP);
+	Stream->ReadInt32(&parameter.ANIMNUM);
 
 }
 inline VOID READ_PT_MOUSE_LEFT_ATTACK_CS(BYTE *buffer, _S_PT_MOUSE_LEFT_ATTACK_CS &parameter)

@@ -366,6 +366,9 @@ VOID CServerIocp::OnIoRead(VOID *pObject, DWORD dwDataLength)
 			case PT_SARASEN_BOSS_ACTION_CAMERA_READY_CS:
 				PROC_PT_SARASEN_BOSS_ACTION_CAMERA_READY_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
 				break;
+			case PT_TEMP:
+				PROC_PT_TEMP(pConnectedSession, dwProtocol, Packet, dwPacketLength);
+				break;
 			}
 		}
 	}

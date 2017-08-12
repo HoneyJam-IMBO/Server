@@ -11,6 +11,13 @@
 //0606
 //여기 전부 나중에
 //0606
+
+VOID CServerIocp::PROC_PT_TEMP(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength)
+{
+	
+	printf("temp\n");
+
+}
 VOID CServerIocp::PROC_PT_LOGIN_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength)
 {
 	// 전처리 함수로 간략화
@@ -105,19 +112,15 @@ VOID CServerIocp::PROC_PT_FREQUENCY_MOVE_CS(CConnectedSession *pConnectedSession
 	// 실제 코드
 	
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-	
-	INT SLOT_ID = pConnectedSession->GetPlayer()->GetSLOT_ID();
-	INT ROOM_ID = pConnectedSession->GetPlayer()->GetROOM_ID();
-	float fPosX = Data.POSX;
-	float fPosY = Data.POSY;
-	float fPosZ = Data.POSZ;
-	float fAngleY = Data.ANGLEY;
-	DWORD dwDirection = Data.DIRECTION;
-	bool bJump = Data.JUMP;
-	
-	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAllExceptMe(SLOT_ID, PT_FREQUENCY_MOVE_SC, Packet, WRITE_PT_FREQUENCY_MOVE_SC(Packet,
-		SLOT_ID, fPosX, fPosY, fPosZ, fAngleY, dwDirection, bJump));
+	if(pConnectedSession->GetPlayer()->GetSLOT_ID() == 0)
+		printf(" X : %f / Y : %f / Z : %f\n", Data.POSX, Data.POSY, Data.POSZ);
+
+	m_RoomManager.GetRoomInfoRoomID(pConnectedSession->GetPlayer()->GetROOM_ID())->WriteAllExceptMe(pConnectedSession->GetPlayer()->GetSLOT_ID(), PT_FREQUENCY_MOVE_SC, Packet, WRITE_PT_FREQUENCY_MOVE_SC(Packet,
+		pConnectedSession->GetPlayer()->GetSLOT_ID(), Data.POSX, Data.POSY, Data.POSZ, Data.ANGLEY, Data.ANIMNUM));
 		
+
+	if (pConnectedSession->GetPlayer()->GetSLOT_ID() == 0)
+		printf(" X : %f / Y : %f / Z : %f\n", Data.POSX, Data.POSY, Data.POSZ);
 	//cout <<ROOM_ID << ", " << SLOT_ID << ", "<< fPosX << ", " << fPosY << ", " << fPosZ << endl;
 	//std::cout << SLOT_ID << ", " << fPosX <<", " << fPosY << ", " << fPosZ << " Angle : "<< fAngleY << std::endl;
 	//위치 동기화
@@ -316,11 +319,11 @@ VOID CServerIocp::PROC_PT_FTOWN_READY_CS(CConnectedSession * pConnectedSession, 
 		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_FTOWN_READY_SC, Packet, WRITE_PT_FTOWN_READY_SC(Packet));
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
+		m_Sync.unlock();
 		return VOID();
 	}
 	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
 	int temp = m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetLoadingComplateNum();
-
 	m_Sync.unlock();
 	return VOID();
 }

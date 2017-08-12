@@ -518,6 +518,9 @@ typedef enum _PROTOCOL
 		PT_ROOM_LIST_COUNT_SC,
 		/*
 		*/
+			PT_TEMP,
+			/*
+			*/
 	// 프로토콜 끝
 	PT_END
 };

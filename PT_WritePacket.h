@@ -1,5 +1,11 @@
 #pragma once
+inline DWORD WRITE_PT_TEMP(BYTE *buffer)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
 
+	return Stream->GetLength();
+}
 inline DWORD WRITE_PT_ENTER_SERVER_ALL(BYTE *buffer, S_PT_ENTER_SERVER_ALL &parameter)
 {
 	CStreamSP Stream;
@@ -372,34 +378,34 @@ inline DWORD WRITE_PT_ENTER_SERVER_FAIL(BYTE *buffer)
 
 	return Stream->GetLength();
 }
-
-inline DWORD WRITE_PT_FREQUENCY_MOVE_CS(BYTE *buffer,INT TYPE, DWORD_PTR ID, FLOAT x, FLOAT y, FLOAT z)
-{
-	CStreamSP Stream;
-	Stream->SetBuffer(buffer);
-
-	Stream->WriteInt32(TYPE);
-	Stream->WriteDWORD_PTR(ID);
-	Stream->WriteFloat(x);
-	Stream->WriteFloat(y);
-	Stream->WriteFloat(z);
-
-	return Stream->GetLength();
-}
-
-inline DWORD WRITE_PT_FREQUENCY_MOVE_SC(BYTE *buffer, INT TYPE, DWORD_PTR ID, FLOAT x, FLOAT y, FLOAT z)
-{
-	CStreamSP Stream;
-	Stream->SetBuffer(buffer);
-
-	Stream->WriteInt32(TYPE);
-	Stream->WriteDWORD_PTR(ID);
-	Stream->WriteFloat(x);
-	Stream->WriteFloat(y);
-	Stream->WriteFloat(z);
-
-	return Stream->GetLength();
-}
+//
+//inline DWORD WRITE_PT_FREQUENCY_MOVE_CS(BYTE *buffer,INT TYPE, DWORD_PTR ID, FLOAT x, FLOAT y, FLOAT z)
+//{
+//	CStreamSP Stream;
+//	Stream->SetBuffer(buffer);
+//
+//	Stream->WriteInt32(TYPE);
+//	Stream->WriteDWORD_PTR(ID);
+//	Stream->WriteFloat(x);
+//	Stream->WriteFloat(y);
+//	Stream->WriteFloat(z);
+//
+//	return Stream->GetLength();
+//}
+//
+//inline DWORD WRITE_PT_FREQUENCY_MOVE_SC(BYTE *buffer, INT TYPE, DWORD_PTR ID, FLOAT x, FLOAT y, FLOAT z)
+//{
+//	CStreamSP Stream;
+//	Stream->SetBuffer(buffer);
+//
+//	Stream->WriteInt32(TYPE);
+//	Stream->WriteDWORD_PTR(ID);
+//	Stream->WriteFloat(x);
+//	Stream->WriteFloat(y);
+//	Stream->WriteFloat(z);
+//
+//	return Stream->GetLength();
+//}
 
 inline DWORD WRITE_PT_ENTER_SERVER_ALL(BYTE *buffer, DWORD_PTR id, FLOAT X, FLOAT Y, FLOAT Z)
 {
@@ -852,7 +858,7 @@ inline DWORD WRITE_PT_FTOWN_READY_SC(BYTE *buffer)
 }
 
 
-inline DWORD WRITE_PT_FREQUENCY_MOVE_CS(BYTE *buffer, float POSX, float POSY, float POSZ, float ANGLEY, DWORD DIRECTION, bool JUMP)
+inline DWORD WRITE_PT_FREQUENCY_MOVE_CS(BYTE *buffer, float POSX, float POSY, float POSZ, float ANGLEY, INT ANIMNUM)
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);
@@ -861,12 +867,11 @@ inline DWORD WRITE_PT_FREQUENCY_MOVE_CS(BYTE *buffer, float POSX, float POSY, fl
 	Stream->WriteFloat(POSY);
 	Stream->WriteFloat(POSZ);
 	Stream->WriteFloat(ANGLEY);
-	Stream->WriteDWORD(DIRECTION);
-	Stream->WriteBOOL(JUMP);
+	Stream->WriteInt32(ANIMNUM);
 	
 	return Stream->GetLength();
 }
-inline DWORD WRITE_PT_FREQUENCY_MOVE_SC(BYTE *buffer,INT SLOT_ID, float POSX, float POSY, float POSZ, float ANGLEY, DWORD DIRECTION, bool JUMP)
+inline DWORD WRITE_PT_FREQUENCY_MOVE_SC(BYTE *buffer,INT SLOT_ID, float POSX, float POSY, float POSZ, float ANGLEY,INT ANIMNUM)
 {
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);
@@ -876,8 +881,7 @@ inline DWORD WRITE_PT_FREQUENCY_MOVE_SC(BYTE *buffer,INT SLOT_ID, float POSX, fl
 	Stream->WriteFloat(POSY);
 	Stream->WriteFloat(POSZ);
 	Stream->WriteFloat(ANGLEY);
-	Stream->WriteDWORD(DIRECTION);
-	Stream->WriteBOOL(JUMP);
+	Stream->WriteInt32(ANIMNUM);
 	return Stream->GetLength();
 }
 inline DWORD WRITE_PT_MOUSE_LEFT_ATTACK_CS(BYTE *buffer, bool ATTACK)
