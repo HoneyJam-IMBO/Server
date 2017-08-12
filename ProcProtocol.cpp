@@ -115,13 +115,10 @@ VOID CServerIocp::PROC_PT_FREQUENCY_MOVE_CS(CConnectedSession *pConnectedSession
 	DWORD dwDirection = Data.DIRECTION;
 	bool bJump = Data.JUMP;
 	
-
-
-
-
 	m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAllExceptMe(SLOT_ID, PT_FREQUENCY_MOVE_SC, Packet, WRITE_PT_FREQUENCY_MOVE_SC(Packet,
 		SLOT_ID, fPosX, fPosY, fPosZ, fAngleY, dwDirection, bJump));
 		
+	//cout <<ROOM_ID << ", " << SLOT_ID << ", "<< fPosX << ", " << fPosY << ", " << fPosZ << endl;
 	//std::cout << SLOT_ID << ", " << fPosX <<", " << fPosY << ", " << fPosZ << " Angle : "<< fAngleY << std::endl;
 	//위치 동기화
 	//pPlayer->SetPlayerPosition(XMLoadFloat3(&xmfPos));
@@ -308,14 +305,22 @@ VOID CServerIocp::PROC_PT_ROOM_JOIN_CS(CConnectedSession * pConnectedSession, DW
 VOID CServerIocp::PROC_PT_FTOWN_READY_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength){
 	READ_PACKET(PT_FTOWN_READY_CS);
 	
+	m_Sync.lock();
+
 	int LoadingComplateNum = m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetLoadingComplateNum();
 	LoadingComplateNum++;
+	INT ROOM_ID = Data.ROOM_ID;
+
 	if (LoadingComplateNum == m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetPlayerNum()) {
+		std::cout << "FTOWN LOADING COMP!!!!" << std::endl;
 		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_FTOWN_READY_SC, Packet, WRITE_PT_FTOWN_READY_SC(Packet));
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
 	}
 	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(LoadingComplateNum);
+	int temp = m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetLoadingComplateNum();
+
+	m_Sync.unlock();
 	return VOID();
 }
 

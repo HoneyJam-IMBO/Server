@@ -62,6 +62,26 @@ bool CRoomManager::Leave(int Room_ID, int Slot_ID)
 			}
 		}
 	}
+	//for (; iter != m_mlpObject[tag::TAG_DYNAMIC_OBJECT].end(); )
+	//{
+	//	(*iter)->Animate(fTimeElapsed);
+	//	int current_index = m_pSpaceContainer->SearchSpace((*iter)->GetPosition());
+	//	if ((*iter)->GetSpaceIndex() != current_index)//이전 공간 index와 현재 index가 다르다면
+	//	{
+	//		utag ut = (*iter)->GetUTag();
+	//		m_pSpaceContainer->AddBlockObjectList((*iter));//block Object list에 등록
+
+	//		m_mlpCollisionObject[ut].remove_if([&iter](CGameObject* pObject) {
+	//			return (pObject == (*iter));
+	//		});
+
+	//		iter = m_mlpObject[tag::TAG_DYNAMIC_OBJECT].erase(iter);
+
+	//	}
+	//	else
+	//		++iter;
+	//	nObject++;
+	//}
 	return true;
 }
 

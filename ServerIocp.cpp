@@ -331,16 +331,22 @@ VOID CServerIocp::OnIoRead(VOID *pObject, DWORD dwDataLength)
 				break;
 			case PT_FTOWN_READY_CS:
 				PROC_PT_FTOWN_READY_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
+				break;
 			case PT_FTOWN_NPC_READY_CS:
 				PROC_PT_FTOWN_NPC_READY_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
+				break;
 			case PT_ALDENARD_START_CS:
 				PROC_PT_ALDENARD_START_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
+				break;
 			case PT_ALDENARD_READY_CS:
 				PROC_PT_ALDENARD_READY_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
+				break;
 			case PT_SARASEN_START_CS:
 				PROC_PT_SARASEN_START_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
+				break;
 			case PT_SARASEN_READY_CS:
 				PROC_PT_SARASEN_READY_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
+				break;
 			case PT_FREQUENCY_MOVE_CS:
 				PROC_PT_FREQUENCY_MOVE_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
 				break;
