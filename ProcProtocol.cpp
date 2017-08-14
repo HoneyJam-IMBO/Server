@@ -15,7 +15,7 @@
 VOID CServerIocp::PROC_PT_TEMP(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength)
 {
 	
-	printf("temp\n");
+	//printf("temp\n");
 
 }
 VOID CServerIocp::PROC_PT_LOGIN_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength)
@@ -103,38 +103,32 @@ VOID CServerIocp::PROC_PT_ENTER_EARTH_CS(CConnectedSession *pConnectedSession, D
 // 사용자 등록 프로토콜 처리
 VOID CServerIocp::PROC_PT_FREQUENCY_MOVE_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength)
 {
-	//플레이어의 지역이 아직 설정 안되있으면 return;
-	//if (nullptr == pConnectedSession->GetPlayer()->GetRegion()) return;
-
 
 	// 전처리 함수로 간략화
 	READ_PACKET(PT_FREQUENCY_MOVE_CS);
 	// 실제 코드
 	
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-	if(pConnectedSession->GetPlayer()->GetSLOT_ID() == 0)
-		printf(" X : %f / Y : %f / Z : %f\n", Data.POSX, Data.POSY, Data.POSZ);
 
 	m_RoomManager.GetRoomInfoRoomID(pConnectedSession->GetPlayer()->GetROOM_ID())->WriteAllExceptMe(pConnectedSession->GetPlayer()->GetSLOT_ID(), PT_FREQUENCY_MOVE_SC, Packet, WRITE_PT_FREQUENCY_MOVE_SC(Packet,
 		pConnectedSession->GetPlayer()->GetSLOT_ID(), Data.POSX, Data.POSY, Data.POSZ, Data.ANGLEY, Data.ANIMNUM));
-		
 
-	if (pConnectedSession->GetPlayer()->GetSLOT_ID() == 0)
-		printf(" X : %f / Y : %f / Z : %f\n", Data.POSX, Data.POSY, Data.POSZ);
-	//cout <<ROOM_ID << ", " << SLOT_ID << ", "<< fPosX << ", " << fPosY << ", " << fPosZ << endl;
-	//std::cout << SLOT_ID << ", " << fPosX <<", " << fPosY << ", " << fPosZ << " Angle : "<< fAngleY << std::endl;
-	//위치 동기화
-	//pPlayer->SetPlayerPosition(XMLoadFloat3(&xmfPos));
-
-	////충돌체크
-	
-	////브로드 캐스트
-	//pPlayer->GetRegion()->WriteAll(PT_FREQUENCY_MOVE_SC, Packet,
-	//	WRITE_PT_FREQUENCY_MOVE_SC(Packet, PLAYER, 
-	//		pPlayer->GetID(), xmfPos.x, xmfPos.y, xmfPos.z));
 
 }
+VOID CServerIocp::PROC_PT_BOSS_FREQUENCY_MOVE_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength)
+{
 
+	// 전처리 함수로 간략화
+	READ_PACKET(PT_BOSS_FREQUENCY_MOVE_CS);
+	// 실제 코드
+
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+
+	m_RoomManager.GetRoomInfoRoomID(pConnectedSession->GetPlayer()->GetROOM_ID())->WriteAllExceptMe(pConnectedSession->GetPlayer()->GetSLOT_ID(), PT_BOSS_FREQUENCY_MOVE_SC, Packet, WRITE_PT_BOSS_FREQUENCY_MOVE_SC(Packet, Data.POSX, Data.POSY, Data.POSZ, Data.ANGLEY, Data.ANIMNUM));
+
+	//cout << Data.POSX << " , " << Data.POSY << " , " << Data.POSZ << endl;
+
+}
 VOID CServerIocp::PROC_PT_MOUSE_LEFT_ATTACK_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength)
 {
 	//플레이어의 지역이 아직 설정 안되있으면 return;

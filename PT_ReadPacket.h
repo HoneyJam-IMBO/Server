@@ -460,6 +460,33 @@ inline VOID READ_PT_FREQUENCY_MOVE_SC(BYTE *buffer, S_PT_FREQUENCY_MOVE_SC &para
 	Stream->ReadInt32(&parameter.ANIMNUM);
 
 }
+
+inline VOID READ_PT_BOSS_FREQUENCY_MOVE_SC(BYTE *buffer, S_PT_BOSS_FREQUENCY_MOVE_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->ReadFloat(&parameter.POSX);
+	Stream->ReadFloat(&parameter.POSY);
+	Stream->ReadFloat(&parameter.POSZ);
+	Stream->ReadFloat(&parameter.ANGLEY);
+	Stream->ReadInt32(&parameter.ANIMNUM);
+
+}
+
+inline VOID READ_PT_BOSS_FREQUENCY_MOVE_CS(BYTE *buffer, S_PT_BOSS_FREQUENCY_MOVE_CS &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->ReadFloat(&parameter.POSX);
+	Stream->ReadFloat(&parameter.POSY);
+	Stream->ReadFloat(&parameter.POSZ);
+	Stream->ReadFloat(&parameter.ANGLEY);
+	Stream->ReadInt32(&parameter.ANIMNUM);
+
+}
+
 inline VOID READ_PT_MOUSE_LEFT_ATTACK_CS(BYTE *buffer, _S_PT_MOUSE_LEFT_ATTACK_CS &parameter)
 {
 	CStreamSP Stream;
@@ -712,3 +739,4 @@ inline VOID READ_PT_BOSS_CLEAR_SC(BYTE *buffer, S_PT_BOSS_CLEAR_SC &parameter)
 	CStreamSP Stream;
 	Stream->SetBuffer(buffer);
 }
+

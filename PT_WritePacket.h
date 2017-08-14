@@ -884,6 +884,36 @@ inline DWORD WRITE_PT_FREQUENCY_MOVE_SC(BYTE *buffer,INT SLOT_ID, float POSX, fl
 	Stream->WriteInt32(ANIMNUM);
 	return Stream->GetLength();
 }
+
+inline DWORD WRITE_PT_BOSS_FREQUENCY_MOVE_CS(BYTE *buffer, float POSX, float POSY, float POSZ, float ANGLEY, INT ANIMNUM)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteFloat(POSX);
+	Stream->WriteFloat(POSY);
+	Stream->WriteFloat(POSZ);
+	Stream->WriteFloat(ANGLEY);
+	Stream->WriteInt32(ANIMNUM);
+
+	return Stream->GetLength();
+}
+
+
+inline DWORD WRITE_PT_BOSS_FREQUENCY_MOVE_SC(BYTE *buffer, float POSX, float POSY, float POSZ, float ANGLEY, INT ANIMNUM)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteFloat(POSX);
+	Stream->WriteFloat(POSY);
+	Stream->WriteFloat(POSZ);
+	Stream->WriteFloat(ANGLEY);
+	Stream->WriteInt32(ANIMNUM);
+
+	return Stream->GetLength();
+}
+
 inline DWORD WRITE_PT_MOUSE_LEFT_ATTACK_CS(BYTE *buffer, bool ATTACK)
 {
 	CStreamSP Stream;

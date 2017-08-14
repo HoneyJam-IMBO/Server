@@ -518,6 +518,12 @@ typedef enum _PROTOCOL
 		PT_ROOM_LIST_COUNT_SC,
 		/*
 		*/
+			PT_BOSS_FREQUENCY_MOVE_SC,
+			/*
+			*/
+			PT_BOSS_FREQUENCY_MOVE_CS,
+			/*
+			*/
 			PT_TEMP,
 			/*
 			*/
