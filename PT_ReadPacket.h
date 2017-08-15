@@ -724,6 +724,13 @@ inline VOID READ_PT_SKILL_COLLISION_TO_TARGET_CS(BYTE *buffer, S_PT_SKILL_COLLIS
 
 }
 
+inline VOID READ_PT_PLAYER_HP_SC(BYTE *buffer, S_PT_PLAYER_HP_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+	Stream->ReadInt32(&parameter.SLOT_ID);
+	Stream->ReadInt32(&parameter.PLAYER_HP);
+}
 
 inline VOID READ_PT_BOSS_HP_SC(BYTE *buffer, S_PT_BOSS_HP_SC &parameter)
 {

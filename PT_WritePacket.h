@@ -1187,7 +1187,14 @@ inline DWORD WRITE_PT_SKILL_COLLISION_TO_TARGET_CS(BYTE *buffer, INT ROOM_ID, IN
 
 	return Stream->GetLength();
 }
-
+inline DWORD WRITE_PT_PLAYER_HP_SC(BYTE *buffer, INT SLOT_ID, INT PLAYER_HP)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+	Stream->WriteInt32(SLOT_ID);
+	Stream->WriteInt32(PLAYER_HP);
+	return Stream->GetLength();
+}
 inline DWORD WRITE_PT_BOSS_HP_SC(BYTE *buffer, INT BOSS_HP)
 {
 	CStreamSP Stream;

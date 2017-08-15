@@ -47,6 +47,9 @@ public:
 	BOOL GetREADY() { return READY; }
 	void SetREADY(BOOL b) { READY = b; }
 
+	INT GetPLAYERHP() { return PLAYER_HP; }
+	void SetPLAYERHP(INT HP) { PLAYER_HP = HP; }
+
 	//lock mutex 함수 
 	void lock() { m_Sync.lock(); }
 	void unlock() { m_Sync.unlock(); }
@@ -61,6 +64,7 @@ private:
 	INT SLOT_ID{ -1 };
 	BOOL READY{ false };
 	INT CHARACTER{ -1 };
+	INT PLAYER_HP{ 0 };
 	//DWORD_PTR 은 64비트 unsigned int다.
 
 	static INT StaticIDCounter;

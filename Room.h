@@ -23,12 +23,17 @@ public:
 
 	CBoss* GetpBoss() { return m_pBoss; }
 
+	int GetPlayerHP(int SlotID) { return m_PlayersHP[SlotID]; }
+	void SetPlayerHP(int SlotID, int hp) { m_PlayersHP[SlotID] = hp; }
+	int DamagerToPlayerHP(int SlotID, int damage) {m_PlayersHP[SlotID] -= damage; if (m_PlayersHP[SlotID] < 0) m_PlayersHP[SlotID] = 0; else if (m_PlayersHP[SlotID] > 1000) m_PlayersHP[SlotID] = 1000;
+		return m_PlayersHP[SlotID]; }
 private:
 	CConnectedSession** m_ppConnectedSession{ nullptr };
 	int m_RoomNum{ 0 };
 	int m_CurPlayerNum{ 0 };
 	int m_LoadingComplateNum{ 0 };
 	CBoss* m_pBoss;
+	INT m_PlayersHP[4]{ 0,0,0,0 };
 public:
 	CRoom(int nRoomNum);
 	~CRoom();

@@ -529,3 +529,8 @@ typedef struct _S_PT_BOSS_HP_SC {
 typedef struct _S_PT_BOSS_CLEAR_SC{
 
 }S_PT_BOSS_CLEAR_SC;
+
+typedef struct _S_PT_PLAYER_HP_SC {
+	INT SLOT_ID;
+	INT PLAYER_HP;
+}S_PT_PLAYER_HP_SC;
