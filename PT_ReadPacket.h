@@ -747,3 +747,24 @@ inline VOID READ_PT_BOSS_CLEAR_SC(BYTE *buffer, S_PT_BOSS_CLEAR_SC &parameter)
 	Stream->SetBuffer(buffer);
 }
 
+inline VOID READ_PT_RANGE_SKILL_INFO_SC(BYTE *buffer, S_PT_RANGE_SKILL_INFO_SC &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->ReadInt32(&parameter.SLOT_ID);
+	Stream->ReadFloat(&parameter.X);
+	Stream->ReadFloat(&parameter.Y);
+	Stream->ReadFloat(&parameter.Z);
+}
+
+inline VOID READ_PT_RANGE_SKILL_INFO_CS(BYTE *buffer, S_PT_RANGE_SKILL_INFO_CS &parameter)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->ReadInt32(&parameter.SLOT_ID);
+	Stream->ReadFloat(&parameter.X);
+	Stream->ReadFloat(&parameter.Y);
+	Stream->ReadFloat(&parameter.Z);
+}

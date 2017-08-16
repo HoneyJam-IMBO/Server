@@ -372,6 +372,8 @@ VOID CServerIocp::OnIoRead(VOID *pObject, DWORD dwDataLength)
 			case PT_TEMP:
 				PROC_PT_TEMP(pConnectedSession, dwProtocol, Packet, dwPacketLength);
 				break;
+			case PT_RANGE_SKILL_INFO_CS:
+				PROC_PT_RANGE_SKILL_INFO_CS(pConnectedSession, dwProtocol, Packet, dwPacketLength);
 			}
 		}
 	}

@@ -1210,3 +1210,27 @@ inline DWORD WRITE_PT_BOSS_CLEAR_SC(BYTE *buffer)
 	Stream->SetBuffer(buffer);
 	return Stream->GetLength();
 }
+
+inline DWORD WRITE_PT_RANGE_SKILL_INFO_SC(BYTE *buffer, INT SLOT_ID, float POSX, float POSY, float POSZ)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(SLOT_ID);
+	Stream->WriteFloat(POSX);
+	Stream->WriteFloat(POSY);
+	Stream->WriteFloat(POSZ);
+	return Stream->GetLength();
+}
+
+inline DWORD WRITE_PT_RANGE_SKILL_INFO_CS(BYTE *buffer, INT SLOT_ID, float POSX, float POSY, float POSZ)
+{
+	CStreamSP Stream;
+	Stream->SetBuffer(buffer);
+
+	Stream->WriteInt32(SLOT_ID);
+	Stream->WriteFloat(POSX);
+	Stream->WriteFloat(POSY);
+	Stream->WriteFloat(POSZ);
+	return Stream->GetLength();
+}

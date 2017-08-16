@@ -456,7 +456,12 @@ typedef enum _PROTOCOL
 		PT_PLAYER_HP_SC,
 			/*
 			*/
-
+			PT_RANGE_SKILL_INFO_CS,
+			/*
+			*/
+			PT_RANGE_SKILL_INFO_SC,
+			/*
+			*/
 
 		PT_FTOWN_NPC2_READY_CS,
 		/*

@@ -126,7 +126,7 @@ VOID CServerIocp::PROC_PT_BOSS_FREQUENCY_MOVE_CS(CConnectedSession *pConnectedSe
 
 	m_RoomManager.GetRoomInfoRoomID(pConnectedSession->GetPlayer()->GetROOM_ID())->WriteAllExceptMe(pConnectedSession->GetPlayer()->GetSLOT_ID(), PT_BOSS_FREQUENCY_MOVE_SC, Packet, WRITE_PT_BOSS_FREQUENCY_MOVE_SC(Packet, Data.POSX, Data.POSY, Data.POSZ, Data.ANGLEY, Data.ANIMNUM));
 
-	cout << "BOSS FREQ ANIM NUM : " << Data.ANIMNUM << endl;
+	//cout << "BOSS FREQ ANIM NUM : " << Data.ANIMNUM << endl;
 
 }
 VOID CServerIocp::PROC_PT_MOUSE_LEFT_ATTACK_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength)
@@ -349,6 +349,8 @@ VOID CServerIocp::PROC_PT_FTOWN_NPC_READY_CS(CConnectedSession * pConnectedSessi
 		m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAll(PT_FTOWN_NPC_READY_COMP_SC, Packet, WRITE_PT_FTOWN_NPC_READY_COMP_SC(Packet));
 		for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i)
 			m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->SetREADY(0);
+		memset(Packet, 0, MAX_BUFFER_LENGTH);
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_BOSS_HP_SC, Packet, WRITE_PT_BOSS_HP_SC(Packet, 2000));
 		return;
 	}
 
@@ -375,8 +377,7 @@ VOID CServerIocp::PROC_PT_FTOWN_BOSS_ACTION_CAMERA_READY_CS(CConnectedSession * 
 		m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAll(PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC, Packet, WRITE_PT_FTOWN_BOSS_ACTION_CAMERA_READY_COMP_SC(Packet));
 		for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i)
 			m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->SetREADY(0);
-		memset(Packet, 0, MAX_BUFFER_LENGTH);
-		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_BOSS_HP_SC, Packet, WRITE_PT_BOSS_HP_SC(Packet, 10000));
+		
 
 		return;
 	}
@@ -464,7 +465,6 @@ VOID CServerIocp::PROC_PT_SARASEN_READY_CS(CConnectedSession * pConnectedSession
 		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_SARASEN_READY_SC, Packet, WRITE_PT_SARASEN_READY_SC(Packet));
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetLoadingComplateNum(0);
-		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetpBoss()->SetHP(10000);
 		cout << "SARASEN LOADING START!" << endl;
 		return VOID();
 	}
@@ -488,6 +488,9 @@ VOID CServerIocp::PROC_PT_SARASEN_BOSS_START_CS(CConnectedSession * pConnectedSe
 	}
 	if (nReadyPlayer == m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum()) {//방안의 모든 사람이 ready했으면 출발
 		m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->WriteAll(PT_SARASEN_BOSS_START_COMP_SC, Packet, WRITE_PT_SARASEN_BOSS_START_COMP_SC(Packet));
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetpBoss()->SetHP(2000);
+		memset(Packet, 0, MAX_BUFFER_LENGTH);
+		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_BOSS_HP_SC, Packet, WRITE_PT_BOSS_HP_SC(Packet, 2000));
 		for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayerNum(); ++i)
 			m_RoomManager.GetRoomInfoRoomID(ROOM_ID)->GetPlayers()[i]->GetPlayer()->SetREADY(0);
 		return;
@@ -525,7 +528,13 @@ VOID CServerIocp::PROC_PT_SARASEN_BOSS_ACTION_CAMERA_READY_CS(CConnectedSession 
 	return VOID();
 }
 
-
+VOID CServerIocp::PROC_PT_RANGE_SKILL_INFO_CS(CConnectedSession *pConnectedSession, DWORD dwProtocol, BYTE *pPacket, DWORD dwPacketLength) {
+	READ_PACKET(PT_RANGE_SKILL_INFO_CS);
+	//Data.SLOT_ID
+	//Data.X Y Z
+	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
+	m_RoomManager.GetRoomInfoRoomID(pConnectedSession->GetPlayer()->GetROOM_ID())->WriteAllExceptMe(Data.SLOT_ID, PT_RANGE_SKILL_INFO_SC, Packet, WRITE_PT_RANGE_SKILL_INFO_SC(Packet, Data.SLOT_ID, Data.X, Data.Y, Data.Z));
+}
 VOID CServerIocp::PROC_PT_SKILL_COLLISION_TO_TARGET_CS(CConnectedSession * pConnectedSession, DWORD dwProtocol, BYTE * pPacket, DWORD dwPacketLength) {
 	READ_PACKET(PT_SKILL_COLLISION_TO_TARGET_CS);
 
@@ -538,18 +547,25 @@ VOID CServerIocp::PROC_PT_SKILL_COLLISION_TO_TARGET_CS(CConnectedSession * pConn
 
 	if(Data.MY_SLOT_ID == 5)
 		Data.CHARACTER = 6;
-	cout << "MY : " << Data.MY_SLOT_ID << " / TARGET : " << Data.TARGET_SLOT_ID << " / CHARACTER : " << Data.CHARACTER << " / SKILLNUM : " << Data.SKILL_NUM << endl;
+	//cout << "MY : " << Data.MY_SLOT_ID << " / TARGET : " << Data.TARGET_SLOT_ID << " / CHARACTER : " << Data.CHARACTER << " / SKILLNUM : " << Data.SKILL_NUM << endl;
 	if (Data.TARGET_SLOT_ID == 5) // 5는 보스
 	{
 		int retval = m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetpBoss()->DamageToHP(DamageFromCharacterSkill(Data.CHARACTER, Data.SKILL_NUM));
 		
 		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
-	
+		if (retval > 0) {
 			m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_BOSS_HP_SC, Packet, WRITE_PT_BOSS_HP_SC(Packet, retval));
-		//else {
-		//	m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_BOSS_CLEAR_SC, Packet, WRITE_PT_BOSS_CLEAR_SC(Packet));
-		//}
-		cout << "BOSS HP : " << retval << endl;
+			
+			}
+		else {
+			m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_BOSS_CLEAR_SC, Packet, WRITE_PT_BOSS_CLEAR_SC(Packet));
+			for (int i = 0; i < m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->GetPlayerNum(); ++i) {
+				memset(Packet, 0, MAX_BUFFER_LENGTH);
+				m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->SetPlayerHP(i, 1000);
+				m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_PLAYER_HP_SC, Packet, WRITE_PT_PLAYER_HP_SC(Packet, i, 1000));
+			}
+		}
+		//cout << "BOSS HP : " << retval << endl;
 	}
 	else{
 		int retval = DamageFromCharacterSkill(Data.CHARACTER, Data.SKILL_NUM);
@@ -560,7 +576,7 @@ VOID CServerIocp::PROC_PT_SKILL_COLLISION_TO_TARGET_CS(CConnectedSession * pConn
 		BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 		m_RoomManager.GetRoomInfoRoomID(Data.ROOM_ID)->WriteAll(PT_PLAYER_HP_SC, Packet, WRITE_PT_PLAYER_HP_SC(Packet, Data.TARGET_SLOT_ID, retval));
 
-		cout << Data.TARGET_SLOT_ID<< " PLAYER HP : " << retval << endl;
+		//cout << Data.TARGET_SLOT_ID<< " PLAYER HP : " << retval << endl;
 	}
 	m_Sync.unlock();
 	return VOID();
@@ -595,6 +611,7 @@ int CServerIocp::DamageFromCharacterSkill(INT Character, INT SkillNum) {
 		//else if (SkillNum == 4) return 100;
 		break;
 	case 3: // 수녀
+		if (SkillNum == 0) return 100;
 		if (SkillNum == 1) return -300;
 		else if (SkillNum == 2) return 200;
 		else if (SkillNum == 3) return -500;
