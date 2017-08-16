@@ -595,7 +595,8 @@ int CServerIocp::DamageFromCharacterSkill(INT Character, INT SkillNum) {
 		else if (SkillNum == 2) return 800;
 		else if (SkillNum == 3) return 1000;
 		else if (SkillNum == 4) return 1000;
-	
+		if (SkillNum == 9)
+			return 300;
 		break;
 	case 1: // 기사
 	
@@ -605,10 +606,12 @@ int CServerIocp::DamageFromCharacterSkill(INT Character, INT SkillNum) {
 
 		break;
 	case 2: // 공간
-		//if (SkillNum == 1) return 100;
+		if (SkillNum == 1) return 100;
 		if (SkillNum == 2) return 1000;
 		else if (SkillNum == 3) return 1500;
-		//else if (SkillNum == 4) return 100;
+		else if (SkillNum == 4) return 100;
+		if (SkillNum == 9)
+			return 300;
 		break;
 	case 3: // 수녀
 		if (SkillNum == 0) return 100;
@@ -616,24 +619,32 @@ int CServerIocp::DamageFromCharacterSkill(INT Character, INT SkillNum) {
 		else if (SkillNum == 2) return 200;
 		else if (SkillNum == 3) return -500;
 		else if (SkillNum == 4) return 300;
+		if (SkillNum == 9)
+			return 300;
 		break;
 	case 4: // 법사
 		if (SkillNum == 1) return 500;
 		else if (SkillNum == 2) return 1000;
-		//else if (SkillNum == 3) return -500;
+		else if (SkillNum == 3) return -500;
 		else if (SkillNum == 4) return 1200;
+		if (SkillNum == 9)
+			return 300;
 		break;
 	case 5: // 바드
 		if (SkillNum == 1) return 300;
-		//else if (SkillNum == 2) return 200;
+		else if (SkillNum == 2) return 200;
 		else if (SkillNum == 3) return 500;
 		else if (SkillNum == 4) return -300;
+		if (SkillNum == 9)
+			return 300;
 		break;
 	case 6: // 보스
 		if (SkillNum == 1) return 100;
 		else if (SkillNum == 2) return 100;
 		else if (SkillNum == 3) return 100;
 		else if (SkillNum == 4) return 100;
+		if (SkillNum == 9)
+			return 100;
 		break;
 	}
 

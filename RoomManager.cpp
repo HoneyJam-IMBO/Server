@@ -33,7 +33,7 @@ bool CRoomManager::Create(CConnectedSession * pReader)
 	BYTE Packet[MAX_BUFFER_LENGTH] = { 0, };
 	pReader->WritePacket(PT_ROOM_CREATE_SC, Packet, WRITE_PT_ROOM_CREATE_SC(Packet, m_iRoomNum));
 
-	CRoom* NewRoom = new CRoom(m_iRoomNum++);
+	CRoom* NewRoom = new CRoom(m_iRoomNum);
 	m_vRoomsList.push_back(NewRoom);
 	m_iRoomCount++;
 	NewRoom->AddPlayer(pReader);
