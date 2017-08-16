@@ -633,18 +633,18 @@ int CServerIocp::DamageFromCharacterSkill(INT Character, INT SkillNum) {
 	case 5: // 바드
 		if (SkillNum == 1) return 300;
 		else if (SkillNum == 2) return 200;
-		else if (SkillNum == 3) return 500;
+		else if (SkillNum == 3) return 500; 
 		else if (SkillNum == 4) return -300;
 		if (SkillNum == 9)
 			return 300;
 		break;
 	case 6: // 보스
-		if (SkillNum == 1) return 100;
-		else if (SkillNum == 2) return 100;
-		else if (SkillNum == 3) return 100;
-		else if (SkillNum == 4) return 100;
+		if (SkillNum == 1) return 300;
+		else if (SkillNum == 2) return 300;
+		else if (SkillNum == 3) return 300;
+		else if (SkillNum == 4) return 300;
 		if (SkillNum == 9)
-			return 100;
+			return 200;
 		break;
 	}
 
