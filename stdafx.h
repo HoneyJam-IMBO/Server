@@ -7,50 +7,22 @@
 
 #define DEBUG
 
-
 #include "../Assets/import/LowLib/Global.h"
 
 //direct 헤더
 #include <Mmsystem.h>
 #include <math.h>
 
-#include <d3d11.h>
-#include <d3dx11.h>
-#include <D3DX10Math.h>
-#include <d3dcompiler.h>
+//#include <d3d11.h>
+//#include <d3dx11.h>
+//#include <D3DX10Math.h>
+//#include <d3dcompiler.h>
+//
 
-
-#include <DirectXMath.h>
-#include <DirectXColors.h>
-#include <DirectXPackedVector.h>
-#include <DirectXCollision.h>
-
-using namespace DirectX;
-using namespace DirectX::PackedVector;
-
-inline D3DXVECTOR3&& XMVecToD3DXVec3(const XMVECTOR& xmVec)
-{
-	XMFLOAT3 xmf3;
-	XMStoreFloat3(&xmf3, xmVec);
-	return std::move(D3DXVECTOR3(xmf3.x, xmf3.y, xmf3.z));
-}
-inline XMFLOAT3 XMVFLOAT3Converter(const XMVECTOR& xmVec)
-{
-	XMFLOAT3 xmf3;
-	XMStoreFloat3(&xmf3, xmVec);
-	return xmf3;
-}
-
-inline XMVECTOR&& XMVECTORConverter(const XMFLOAT3& d3dxv, float wParam = 0.f)
-{
-	return std::move(XMVectorSet(d3dxv.x, d3dxv.y, d3dxv.z, 0.0f));
-}
-
-inline XMVECTOR&& D3DXVec3ToXMVec(const D3DXVECTOR3& d3dxv, float wParam = 0.f)
-{
-	return std::move(XMVectorSet(d3dxv.x, d3dxv.y, d3dxv.z, 0.0f));
-}
-//direct 헤더
+//#include <DirectXMath.h>
+//#include <DirectXColors.h>
+//#include <DirectXPackedVector.h>
+//#include <DirectXCollision.h>
 
 #include "../Assets/import/LowLib/CriticalSection.h"
 #include "../Assets/import/LowLib/MultiThreadSync.h"

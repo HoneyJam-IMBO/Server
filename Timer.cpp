@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "Timer.h"
+#include <windows.h>
 
 CGameTimer::CGameTimer()
 {
@@ -16,7 +17,7 @@ CGameTimer::CGameTimer()
     else 
     { 
 		m_bHardwareHasPerformanceCounter = FALSE;
-		m_nLastTime	= ::timeGetTime(); 
+		m_nLastTime	= timeGetTime();
 		m_fTimeScale = 0.001f;	
     }
 
@@ -40,7 +41,7 @@ void CGameTimer::Tick(float fLockFPS)
 	} 
     else 
     {
-		m_nCurrentTime = ::timeGetTime();
+		m_nCurrentTime = timeGetTime();
 	} 
 
 	fTimeElapsed = (m_nCurrentTime - m_nLastTime) * m_fTimeScale;
@@ -55,7 +56,7 @@ void CGameTimer::Tick(float fLockFPS)
 	        } 
             else 
             {
-				m_nCurrentTime = ::timeGetTime();
+				m_nCurrentTime = timeGetTime();
 	        } 
 	        // Calculate elapsed time in seconds
 	        fTimeElapsed = (m_nCurrentTime - m_nLastTime) * m_fTimeScale;

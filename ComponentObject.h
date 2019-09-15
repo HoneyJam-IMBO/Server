@@ -17,13 +17,13 @@ class CComponentObject{
 	void Update(float elapsedTime);
 
 	//자신의 위치나 방향을 바꾸는 함수들
-	void SetPosition(const XMVECTOR& d3dxvPosition);
-	void SetPosition(float xPosition, float yPosition, float zPosition);
-	XMVECTOR GetPosition();
+//	void SetPosition(const XMVECTOR& d3dxvPosition);
+//	void SetPosition(float xPosition, float yPosition, float zPosition);
+//	XMVECTOR GetPosition();
 
-	void Rotate(const XMVECTOR* pd3dxvAxis, float fAngle);
-	void Rotate(float fPitch, float fYaw, float fRoll);
-	//자신의 위치나 방향을 바꾸는 함수들
+//	void Rotate(const XMVECTOR* pd3dxvAxis, float fAngle);
+//	void Rotate(float fPitch, float fYaw, float fRoll);
+//	//자신의 위치나 방향을 바꾸는 함수들
 
 	//자신의 id반환
 	const object_id GetID() const { return m_ID; }
@@ -39,7 +39,7 @@ class CComponentObject{
 	//Clear
 	void ClearComponents();
 private:
-	XMFLOAT4X4 m_xmf4x4World;
+//	XMFLOAT4X4 m_xmf4x4World;
 
 	//자신의 이름
 	object_id m_ID;

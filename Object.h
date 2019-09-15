@@ -17,23 +17,23 @@ public:
 	virtual bool Animate(float fTimeElapsed) { return true; };
 
 
-	void SetPosition(const XMVECTOR& d3dxvPosition);
-	void SetPosition(float xPosition, float yPosition, float zPosition);
+	//void SetPosition(const XMVECTOR& d3dxvPosition);
+	//void SetPosition(float xPosition, float yPosition, float zPosition);
 
-	XMVECTOR GetLook();
-	XMVECTOR GetUp();
-	XMVECTOR GetRight();
+	//XMVECTOR GetLook();
+	//XMVECTOR GetUp();
+	//XMVECTOR GetRight();
 
-	void Move(XMVECTOR direction, float distance);
+	//void Move(XMVECTOR direction, float distance);
 
-	XMVECTOR GetPosition();
+	//XMVECTOR GetPosition();
 
-	void Rotate(const XMVECTOR* pd3dxvAxis, float fAngle);
-	void Rotate(float fPitch, float fYaw, float fRoll);
+	//void Rotate(const XMVECTOR* pd3dxvAxis, float fAngle);
+	//void Rotate(float fPitch, float fYaw, float fRoll);
 
 	OBJECT_TAG GetTag() { return m_eObjTag; }
-	void SetBoundingSphereRadius(float r) { m_BoundingSphere.Radius = r; }
-	BoundingSphere GetBoundingSphere() { return m_BoundingSphere; }
+	//void SetBoundingSphereRadius(float r) { m_BoundingSphere.Radius = r; }
+	//BoundingSphere GetBoundingSphere() { return m_BoundingSphere; }
 
 	//id
 	INT GetNETWORK_ID() { return NETWORK_ID; }
@@ -77,12 +77,12 @@ protected:
 	CConnectedSession* m_pConnectedSession;
 
 	//충돌 체크
-	BoundingSphere m_BoundingSphere;
+	//BoundingSphere m_BoundingSphere;
 
 	//테그
 	OBJECT_TAG m_eObjTag;
 
-	XMFLOAT4X4 m_d3dxmtxWorld;
+	//XMFLOAT4X4 m_d3dxmtxWorld;
 public:
 	CGameObject(CConnectedSession* pConnectedSession);
 	virtual ~CGameObject();

@@ -9,79 +9,79 @@ void CGameObject::Begin() {
 	//id 부여
 	SetNETWORK_ID();
 
-	XMStoreFloat4x4(&m_d3dxmtxWorld, XMMatrixIdentity());
-	m_BoundingSphere.Center = XMFLOAT3(0, 0, 0);
-	m_BoundingSphere.Radius = 0.0f;
+//	XMStoreFloat4x4(&m_d3dxmtxWorld, XMMatrixIdentity());
+//	m_BoundingSphere.Center = XMFLOAT3(0, 0, 0);
+//	m_BoundingSphere.Radius = 0.0f;
 
 }
 void CGameObject::End() {
 
 }
 
-//포지션 Get Setter
-void CGameObject::SetPosition(const XMVECTOR& d3dxvPosition) {
-	XMFLOAT3 xmfPosition;
-	XMStoreFloat3(&xmfPosition, d3dxvPosition);
-	SetPosition(xmfPosition.x, xmfPosition.y, xmfPosition.z);
-}
-void CGameObject::SetPosition(float xPosition, float yPosition, float zPosition) {
-	m_d3dxmtxWorld._41 = xPosition;
-	m_d3dxmtxWorld._42 = yPosition;
-	m_d3dxmtxWorld._43 = zPosition;
-
-	m_BoundingSphere.Center = XMFLOAT3(m_d3dxmtxWorld._41, m_d3dxmtxWorld._42, m_d3dxmtxWorld._43);
-}
-XMVECTOR CGameObject::GetPosition() {
-	return XMVectorSet(m_d3dxmtxWorld._41, m_d3dxmtxWorld._42, m_d3dxmtxWorld._43, 0.0f);
-	//return D3DXVECTOR3(m_d3dxmtxWorld._41, m_d3dxmtxWorld._42, m_d3dxmtxWorld._43);
-}
-
-XMVECTOR CGameObject::GetRight()
-{
-	XMVECTOR d3dxvRight = XMVectorSet(m_d3dxmtxWorld._11, m_d3dxmtxWorld._12, m_d3dxmtxWorld._13, 0.0f);
-	d3dxvRight = XMVector3Normalize(d3dxvRight);
-	return(d3dxvRight);
-}
-
-XMVECTOR CGameObject::GetUp()
-{
-	XMVECTOR d3dxvUp = XMVectorSet(m_d3dxmtxWorld._21, m_d3dxmtxWorld._22, m_d3dxmtxWorld._23, 0.0f);
-	d3dxvUp = XMVector3Normalize(d3dxvUp);
-	return(d3dxvUp);
-}
-
-XMVECTOR CGameObject::GetLook()
-{
-	XMVECTOR d3dxvLookAt = XMVectorSet(m_d3dxmtxWorld._31, m_d3dxmtxWorld._32, m_d3dxmtxWorld._33, 0.0f);
-	d3dxvLookAt = XMVector3Normalize(d3dxvLookAt);
-	return(d3dxvLookAt);
-}
-
-
-void CGameObject::Move(XMVECTOR direction, float distance)
-{
-	XMVECTOR d3dxvPosition = GetPosition();
-	d3dxvPosition += distance * direction;
-	CGameObject::SetPosition(d3dxvPosition);
-}
-//포지션 Get Setter
-
-void CGameObject::Rotate(float fPitch, float fYaw, float fRoll)
-{
-	XMMATRIX mtxRotate;
-	mtxRotate = XMMatrixRotationRollPitchYaw(XMConvertToRadians(fPitch),
-		XMConvertToRadians(fYaw), XMConvertToRadians(fRoll));
-	XMStoreFloat4x4(&m_d3dxmtxWorld, mtxRotate * XMLoadFloat4x4(&m_d3dxmtxWorld));
-	//	if (!m_pParent) m_d3dxmtxWorld = m_d3dxmtxLocal;
-}
-
-void CGameObject::Rotate(const XMVECTOR *pd3dxvAxis, float fAngle)
-{
-	XMMATRIX mtxRotate;
-	mtxRotate = XMMatrixRotationAxis(*pd3dxvAxis, XMConvertToRadians(fAngle));
-	XMStoreFloat4x4(&m_d3dxmtxWorld, mtxRotate * XMLoadFloat4x4(&m_d3dxmtxWorld));
-	//	if (!m_pParent) m_d3dxmtxWorld = m_d3dxmtxLocal;
-}
+////포지션 Get Setter
+//void CGameObject::SetPosition(const XMVECTOR& d3dxvPosition) {
+//	XMFLOAT3 xmfPosition;
+//	XMStoreFloat3(&xmfPosition, d3dxvPosition);
+//	SetPosition(xmfPosition.x, xmfPosition.y, xmfPosition.z);
+//}
+//void CGameObject::SetPosition(float xPosition, float yPosition, float zPosition) {
+//	m_d3dxmtxWorld._41 = xPosition;
+//	m_d3dxmtxWorld._42 = yPosition;
+//	m_d3dxmtxWorld._43 = zPosition;
+//
+//	m_BoundingSphere.Center = XMFLOAT3(m_d3dxmtxWorld._41, m_d3dxmtxWorld._42, m_d3dxmtxWorld._43);
+//}
+//XMVECTOR CGameObject::GetPosition() {
+//	return XMVectorSet(m_d3dxmtxWorld._41, m_d3dxmtxWorld._42, m_d3dxmtxWorld._43, 0.0f);
+//	//return D3DXVECTOR3(m_d3dxmtxWorld._41, m_d3dxmtxWorld._42, m_d3dxmtxWorld._43);
+//}
+//
+//XMVECTOR CGameObject::GetRight()
+//{
+//	XMVECTOR d3dxvRight = XMVectorSet(m_d3dxmtxWorld._11, m_d3dxmtxWorld._12, m_d3dxmtxWorld._13, 0.0f);
+//	d3dxvRight = XMVector3Normalize(d3dxvRight);
+//	return(d3dxvRight);
+//}
+//
+//XMVECTOR CGameObject::GetUp()
+//{
+//	XMVECTOR d3dxvUp = XMVectorSet(m_d3dxmtxWorld._21, m_d3dxmtxWorld._22, m_d3dxmtxWorld._23, 0.0f);
+//	d3dxvUp = XMVector3Normalize(d3dxvUp);
+//	return(d3dxvUp);
+//}
+//
+//XMVECTOR CGameObject::GetLook()
+//{
+//	XMVECTOR d3dxvLookAt = XMVectorSet(m_d3dxmtxWorld._31, m_d3dxmtxWorld._32, m_d3dxmtxWorld._33, 0.0f);
+//	d3dxvLookAt = XMVector3Normalize(d3dxvLookAt);
+//	return(d3dxvLookAt);
+//}
+//
+//
+//void CGameObject::Move(XMVECTOR direction, float distance)
+//{
+//	XMVECTOR d3dxvPosition = GetPosition();
+//	d3dxvPosition += distance * direction;
+//	CGameObject::SetPosition(d3dxvPosition);
+//}
+////포지션 Get Setter
+//
+//void CGameObject::Rotate(float fPitch, float fYaw, float fRoll)
+//{
+//	XMMATRIX mtxRotate;
+//	mtxRotate = XMMatrixRotationRollPitchYaw(XMConvertToRadians(fPitch),
+//		XMConvertToRadians(fYaw), XMConvertToRadians(fRoll));
+//	XMStoreFloat4x4(&m_d3dxmtxWorld, mtxRotate * XMLoadFloat4x4(&m_d3dxmtxWorld));
+//	//	if (!m_pParent) m_d3dxmtxWorld = m_d3dxmtxLocal;
+//}
+//
+//void CGameObject::Rotate(const XMVECTOR *pd3dxvAxis, float fAngle)
+//{
+//	XMMATRIX mtxRotate;
+//	mtxRotate = XMMatrixRotationAxis(*pd3dxvAxis, XMConvertToRadians(fAngle));
+//	XMStoreFloat4x4(&m_d3dxmtxWorld, mtxRotate * XMLoadFloat4x4(&m_d3dxmtxWorld));
+//	//	if (!m_pParent) m_d3dxmtxWorld = m_d3dxmtxLocal;
+//}
 void CGameObject::Restart() {
 
 	Begin();
@@ -95,9 +95,9 @@ CGameObject::CGameObject(CConnectedSession* pConnectedSession) {
 	//id부여
 	SetNETWORK_ID();
 
-	XMStoreFloat4x4(&m_d3dxmtxWorld, XMMatrixIdentity());
-	m_BoundingSphere.Center = XMFLOAT3(0, 0, 0);
-	m_BoundingSphere.Radius = 0.0f;
+	//XMStoreFloat4x4(&m_d3dxmtxWorld, XMMatrixIdentity());
+	//m_BoundingSphere.Center = XMFLOAT3(0, 0, 0);
+	//m_BoundingSphere.Radius = 0.0f;
 
 }
 
